@@ -266,4 +266,4 @@ FakesAssemblies/
 .idea/
 
 # Libs
-Libs/*
+Libs/*.dll
