@@ -264,3 +264,6 @@ FakesAssemblies/
 
 # IDE
 .idea/
+
+# Libs
+Libs/*

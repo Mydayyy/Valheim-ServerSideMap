@@ -14,3 +14,17 @@ As of right now, this only applies to the map exploration, not the set markers. 
 
 1. Place the ServerSideMap.dll inside your BepInX plugin folder on your **server and client**
 2. Restart Server and Client
+
+## Development
+
+You need to copy the following dlls into the Libs folder:
+
+- 0Harmony.dll
+- assembly_utils.dll
+- assembly_valheim.dll
+- BepInEx.dll
+- BepInEx.Harmony.dll
+- UnityEngine.CoreModule.dll
+- UnityEngine.dll
+- UnityEngine.ImageConversionModule.dll
+- UnityEngine.UI.dll
