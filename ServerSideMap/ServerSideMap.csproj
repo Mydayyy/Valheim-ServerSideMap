@@ -65,8 +65,14 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="ExplorationDatabase.cs" />
+    <Compile Include="ExplorationMapSync.cs" />
+    <Compile Include="InitialMapSync.cs" />
+    <Compile Include="SaveWorld.cs" />
     <Compile Include="ServerSideMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="_Minimap.cs" />
+    <Compile Include="_ZNet.cs" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
