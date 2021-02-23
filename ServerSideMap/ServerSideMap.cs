@@ -23,8 +23,6 @@ namespace ServerSideMap
         private static int mapSize = 2048; // TODO: Find out where to retrieve this from
         void Awake()
         {
-            // Debug.Log("test");
-            // Logger.LogInfo("Plugin Awake");
             var harmony = new Harmony("eu.mydayyy.plugins.serversidemap");
             Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly(), (string) null);
         }
@@ -106,17 +104,6 @@ namespace ServerSideMap
         private static void onClientExplore(ZRpc client, int  x, int y)
         {
             setExplored(x, y);
-            // public bool IsConnected(long uid)
-            // {
-            //     if (uid == this.GetUID())
-            //         return true;
-            //     foreach (ZNetPeer peer in this.m_peers)
-            //     {
-            //         if (peer.m_uid == uid)
-            //             return true;
-            //     }
-            //     return false;
-            // }
             var znet =  Traverse.Create(typeof(ZNet)).Field("m_instance").GetValue() as ZNet;
             var m_peers = Traverse.Create((znet)).Field("m_peers").GetValue() as List<ZNetPeer>;
             foreach (ZNetPeer peer in m_peers)
