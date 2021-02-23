@@ -244,9 +244,17 @@ namespace ServerSideMap
                 {
                     return;
                 }
-                var znet =  Traverse.Create(typeof(ZNet)).Field("m_instance").GetValue() as ZNet;
-                ZRpc server = _ZNet.GetServerRPC(znet);
-                server.Invoke("OnClientExplore", (object) x, (object) y);
+
+                if (__instance.IsServer())
+                {
+                    onClientExplore(null, x, y);
+                }
+                else
+                {
+                    var znet =  Traverse.Create(typeof(ZNet)).Field("m_instance").GetValue() as ZNet;
+                    ZRpc server = _ZNet.GetServerRPC(znet);
+                    server.Invoke("OnClientExplore", (object) x, (object) y);
+                }
             }
         }
         
