@@ -28,58 +28,6 @@ namespace ServerSideMap
             var harmony = new Harmony("eu.mydayyy.plugins.serversidemap");
             Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly(), (string) null);
         }
-
-        // static  void  SaveTextureToFile( Texture2D tex, String name = "atext2d")
-        // {
-        //     // var bytes=tex.EncodeToPNG();
-        //     // var b = tex.GetRawTextureData();
-        //     // System.IO.File.WriteAllBytes("Test", b);
-        //
-        //     var bytes = tex.EncodeToPNG();
-        //     
-        //     System.IO.File.WriteAllBytes(name, bytes);
-        //
-        //     // byte[] bytes = tex.EncodeToPNG();
-        //
-        // }
-        //
-        // static  void  SaveRawImage( RawImage tex)
-        // {
-        //     // var bytes=tex.EncodeToPNG();
-        //     // var b = tex.GetRawTextureData();
-        //     // System.IO.File.WriteAllBytes("Test", b);
-        //
-        //     // var bytes = tex.EncodeToPNG();
-        //     
-        //     // System.IO.File.WriteAllBytes("Test", bytes);
-        //
-        //     // byte[] bytes = tex.EncodeToPNG();
-        //     
-        //     Texture2D rawImageTexture = (Texture2D)tex.mainTexture;
-        //     SaveTextureToFile(rawImageTexture, "ari");
-        //
-        // }
-
-        // [HarmonyPatch(typeof (Minimap), "GenerateWorldMap")]
-        // private static class MinimapPatch
-        // {
-        //     private static void Postfix(Minimap __instance, Texture2D ___m_mapTexture, Texture2D ___m_forestMaskTexture, RawImage ___m_mapImageLarge)
-        //     {
-        //         var l = BepInEx.Logging.Logger.CreateLogSource("SSM");
-        //         l.LogInfo("GENERATE WORLD MAP " + __instance.m_textureSize);
-        //         
-        //         // SaveTextureToFile( ___m_mapTexture, "___m_mapTexture");
-        //         // SaveTextureToFile(___m_forestMaskTexture, "___m_forestMaskTexture");
-        //         // SaveRawImage(___m_mapImageLarge);
-        //         // ___m_mapImageLarge.texture = ___m_mapTexture;
-        //
-        //         SaveTextureToFile(___m_mapImageLarge.material.GetTexture("_MainTex") as Texture2D, "_MainTex");
-        //         SaveTextureToFile(___m_mapImageLarge.material.GetTexture("_MaskTex") as Texture2D, "_MaskTex");
-        //         SaveTextureToFile(___m_mapImageLarge.material.GetTexture("_HeightTex") as Texture2D, "_HeightTex");
-        //         SaveTextureToFile(___m_mapImageLarge.material.GetTexture("_FogTex") as Texture2D, "_FogTex");
-        //         // Debug.Log("Type: " + ___m_mapImageLarge.);
-        //     }
-        // }
         
         [HarmonyPatch(typeof (ZNet), "LoadWorld")]
         private  class ZnetPatch
