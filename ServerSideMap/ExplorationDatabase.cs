@@ -113,6 +113,8 @@ namespace ServerSideMap
         // TODO: Move to ExplorationMapSync.cs
         public static void OnReceiveMapData(ZRpc client, ZPackage mapData)
         {
+            mapData.SetPos(0);
+            
             var x = mapData.ReadInt();
             var y = mapData.ReadInt();
             

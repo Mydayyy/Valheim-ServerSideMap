@@ -14,6 +14,7 @@ namespace ServerSideMap
             var znet =  Traverse.Create(typeof(ZNet)).Field("m_instance").GetValue() as ZNet;
             var mPeers = Traverse.Create((znet)).Field("m_peers").GetValue() as List<ZNetPeer>;
 
+
             foreach (var peer in mPeers)
             {
                 if (peer.IsReady())
@@ -28,6 +29,14 @@ namespace ServerSideMap
                     peer.m_rpc.Invoke("OnReceiveMapData", (object) z);
                 }
             }
+            
+            // var l = BepInEx.Logging.Logger.CreateLogSource("ServerSideMap");
+            // l.LogInfo("Relaying new explore");
+
+            var zz = new ZPackage();
+            zz.Write(x);
+            zz.Write(y);
+            ExplorationDatabase.OnReceiveMapData(null, zz);
         }
 
 
@@ -73,6 +82,5 @@ namespace ServerSideMap
                 _blockExplore = false;
             }
         }
-        
     }
 }

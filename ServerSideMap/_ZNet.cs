@@ -15,6 +15,8 @@ namespace ServerSideMap
             private static void Postfix(ZNet __instance)
             {
                 _instance = __instance;
+                var l = BepInEx.Logging.Logger.CreateLogSource("SSM");
+                l.LogInfo("ZNet awake");
             }
         }
         

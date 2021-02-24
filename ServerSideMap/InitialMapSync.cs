@@ -57,10 +57,6 @@ namespace ServerSideMap
                     var z = ExplorationDatabase.PackBoolArray(ExplorationDatabase.GetExplorationArray());
                     rpc.Invoke("OnReceiveMapDataInitial", (object) z);
                 }
-                else
-                {
-                    var l = Logger.CreateLogSource("ServerSideMap");
-                }
             }
         }
         
@@ -71,12 +67,25 @@ namespace ServerSideMap
             // ReSharper disable once InconsistentNaming
             private static void Postfix(Minimap __instance)
             {
-                // var explored = Traverse.Create(__instance).Field("m_explored").GetValue() as bool[];
-                // var z = ExplorationDatabase.PackBoolArray(explored);
-                // if (_ZNet.IsServer(_ZNet._instance))
-                // {
-                //     OnClientInitialData(null, z);
-                // }
+                if (_ZNet.IsServer(_ZNet._instance))
+                {
+                    var explored = Traverse.Create(__instance).Field("m_explored").GetValue() as bool[];
+                    var z = ExplorationDatabase.PackBoolArray(explored);
+                    OnClientInitialData(null, z);
+
+                    explored = ExplorationDatabase.GetExplorationArray();
+
+                    for (var index = 0; index < explored.Length; index++)
+                    {
+                        if (explored[index])
+                        {
+                            _Minimap.Explore(_Minimap._instance, index % ExplorationDatabase.MapSize, index / ExplorationDatabase.MapSize);
+                        }
+                    }
+            
+                    var fogTexture =  Traverse.Create((_Minimap._instance)).Field("m_fogTexture").GetValue() as Texture2D;
+                    fogTexture.Apply();
+                }
                 // else
                 // {
                 //     var znet =  Traverse.Create(typeof(ZNet)).Field("m_instance").GetValue() as ZNet;
@@ -85,5 +94,6 @@ namespace ServerSideMap
                 // }
             }
         }
+        
     }
 }

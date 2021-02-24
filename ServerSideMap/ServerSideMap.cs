@@ -44,11 +44,17 @@ namespace ServerSideMap
             {
                 if (__instance.IsServer())
                 {
+                    var l = BepInEx.Logging.Logger.CreateLogSource("SSM");
+                    l.LogInfo("Registered Server Events");
+
                     peer.m_rpc.Register<int, int>("OnClientExplore", new Action<ZRpc, int, int>(ExplorationMapSync.OnClientExplore));
                     peer.m_rpc.Register<ZPackage>("OnClientInitialData", new Action<ZRpc, ZPackage>(InitialMapSync.OnClientInitialData));
                 }
                 else
                 {
+                    var l = BepInEx.Logging.Logger.CreateLogSource("SSM");
+                    l.LogInfo("Registered Client Events");
+                    
                     peer.m_rpc.Register<ZPackage>("OnReceiveMapData", new Action<ZRpc, ZPackage>(ExplorationDatabase.OnReceiveMapData));
                     peer.m_rpc.Register<ZPackage>("OnReceiveMapDataInitial", new Action<ZRpc, ZPackage>(InitialMapSync.OnReceiveMapDataInitial));
                 }
