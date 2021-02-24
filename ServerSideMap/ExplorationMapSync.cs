@@ -1,15 +1,19 @@
 using System.Collections.Generic;
+using BepInEx.Logging;
 using HarmonyLib;
 
 namespace ServerSideMap
 {
     public static class ExplorationMapSync
     {
+        private static bool _blockExplore = false;
+        
         public static void OnClientExplore(ZRpc client, int  x, int y)
         {
             ExplorationDatabase.SetExplored(x, y);
             var znet =  Traverse.Create(typeof(ZNet)).Field("m_instance").GetValue() as ZNet;
             var mPeers = Traverse.Create((znet)).Field("m_peers").GetValue() as List<ZNetPeer>;
+
             foreach (var peer in mPeers)
             {
                 if (peer.IsReady())
@@ -25,6 +29,8 @@ namespace ServerSideMap
                 }
             }
         }
+
+
         
         [HarmonyPatch(typeof (Minimap), "Explore", typeof(int), typeof(int))]
         private class MinimapPatchExplore
@@ -36,6 +42,8 @@ namespace ServerSideMap
                 {
                     return;
                 }
+
+                if (_blockExplore) return;
 
                 if (_ZNet.IsServer(_ZNet._instance))
                 {
@@ -49,5 +57,22 @@ namespace ServerSideMap
                 }
             }
         }
+        
+        
+        [HarmonyPatch(typeof (Minimap), "SetMapData", typeof(byte[]))]
+        private class MinimapPatchSetMapData
+        {
+            private static void Prefix()
+            {
+                _blockExplore = true;
+            }
+
+            // ReSharper disable once InconsistentNaming
+            private static void Postfix(Minimap __instance)
+            {
+                _blockExplore = false;
+            }
+        }
+        
     }
 }
