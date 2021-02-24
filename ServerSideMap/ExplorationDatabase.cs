@@ -119,9 +119,6 @@ namespace ServerSideMap
             var m =  Traverse.Create(typeof(Minimap)).Field("m_instance").GetValue() as Minimap;
             var flag = _Minimap.Explore(m, x, y);
             _dirty = flag || _dirty;
-            
-            var l = BepInEx.Logging.Logger.CreateLogSource("ServerSideMap");
-            l.LogInfo("Received relayed explore from server");
         }
         
 
