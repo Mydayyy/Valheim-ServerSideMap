@@ -10,6 +10,7 @@ namespace ServerSideMap
         private static bool _dirty;
         public static byte[] MapData;
         public const int MapSize = 2048; // TODO: Find out where to retrieve this from
+        public const int MapSizeSquared = 2048*2048; // TODO: Find out where to retrieve this from
 
         public static void SetExplored(int x, int y)
         {
@@ -29,33 +30,36 @@ namespace ServerSideMap
         // TODO: Optimize
         public static bool[] GetExplorationArray()
         {
-            var arr = new bool[MapSize * MapSize];
+            var size = MapSize * MapSize;
+            var arr = new bool[size];
 
-            for (var i = 0; i < MapSize * MapSize; i++)
+            for (var i = 0; i < (size); i++)
             {
                 arr[i] =  Convert.ToBoolean(MapData[i + 8]);
             }
             return arr;
         }
 
-        public static void MergeExplorationArray(bool[] arr)
+        public static void MergeExplorationArray(bool[] arr, int startIndex, int size)
         {
-            for (var i = 0; i < MapSize * MapSize; i++)
+            for (var i = 0; i < size; i++)
             {
-                MapData[i + 8] = arr[i] ? (byte) 0x01: MapData[i + 8];
+                MapData[startIndex + i + 8] = arr[i] ? (byte) 0x01: MapData[i + 8];
             }
         }
         
-        public static ZPackage PackBoolArray(bool[] arr)
+        public static ZPackage PackBoolArray(bool[] arr, int chunkId, int startIndex, int size)
         {
             var l = BepInEx.Logging.Logger.CreateLogSource("ServerSideMap");
             
             ZPackage z = new ZPackage();
             
+            z.Write(chunkId);
+            
             byte currentByte = 0;
             int currentIndex = 0;
 
-            for (var i = 0; i < arr.Length; i++)
+            for (var i = startIndex; i < startIndex+size; i++)
             {
                 var value = arr[i];
                 if (value)
@@ -77,21 +81,17 @@ namespace ServerSideMap
                 z.Write(currentByte);
             }
             
-            l.LogInfo("Compressed exploration array:  " + arr.Length + ":" + z.Size());
+            l.LogInfo("Compressed exploration array:  " + size + ":" + z.Size());
 
             return z;
         }
 
-        public static bool[] UnpackBoolArray(ZPackage z)
+        public static bool[] UnpackBoolArray(ZPackage z, int length)
         {
             var l = BepInEx.Logging.Logger.CreateLogSource("ServerSideMap");
             
-            z.SetPos(0);
-            
-            var size = z.Size() * 8;
-              
-            var arr = new bool[size];
-            for (var i = 0; i < size; i += 8)
+            var arr = new bool[length];
+            for (var i = 0; i < length; i += 8)
             {          
 
                 var b = z.ReadByte();
