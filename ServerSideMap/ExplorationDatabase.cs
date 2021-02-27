@@ -50,7 +50,7 @@ namespace ServerSideMap
             var z = new ZPackage();
 
             z.Write((int) 3);
-            z.Write(Explored.Length);
+            z.Write(MapSize);
 
             foreach (var t in Explored)
             {
