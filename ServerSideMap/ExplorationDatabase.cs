@@ -44,7 +44,7 @@ namespace ServerSideMap
         {
             for (var i = 0; i < size; i++)
             {
-                MapData[startIndex + i + 8] = arr[i] ? (byte) 0x01: MapData[i + 8];
+                MapData[startIndex + i + 8] = arr[i] ? (byte) 0x01: MapData[startIndex + i + 8];
             }
         }
         
