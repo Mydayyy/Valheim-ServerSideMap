@@ -23,22 +23,16 @@ namespace ServerSideMap
                 }
                 catch
                 {
-                    var z = new ZPackage();
                     // ReSharper disable once RedundantCast
-                    z.Write((int) 3);
-                    z.Write(ExplorationDatabase.MapSize);
-                    for (var i = 0; i < ExplorationDatabase.MapSize*ExplorationDatabase.MapSize; i++)
-                    {
-                        z.Write(false);
-                    }
-                    z.Write(0);
-                    ExplorationDatabase.MapData = z.GetArray();
+                    ExplorationDatabase.SetMapData(ExplorationDatabase.Default());
                     Utility.Log("new explore file generated");
                     __instance.Save(true);
                     return;
                 }
                 BinaryReader reader = new BinaryReader(fileStream);
-                ExplorationDatabase.MapData = reader.ReadBytes(int.MaxValue);
+                var data = reader.ReadBytes(int.MaxValue);
+                var z = new ZPackage(data);
+                ExplorationDatabase.SetMapData(z);
                 Utility.Log("loaded from existing explore file");
             }
         }
@@ -55,7 +49,7 @@ namespace ServerSideMap
         
                 FileStream fileStream = File.Create(exploredPath);
                 BinaryWriter writer = new BinaryWriter(fileStream);
-                writer.Write(ExplorationDatabase.MapData);
+                writer.Write(ExplorationDatabase.GetMapData().GetArray());
                 writer.Flush();
                 fileStream.Flush(true);
                 fileStream.Close();

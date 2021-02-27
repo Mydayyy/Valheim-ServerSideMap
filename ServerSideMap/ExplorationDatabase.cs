@@ -8,43 +8,83 @@ namespace ServerSideMap
     public static class ExplorationDatabase
     {
         private static bool _dirty;
-        public static byte[] MapData;
+        public static bool[] Explored;
         public const int MapSize = 2048; // TODO: Find out where to retrieve this from
         public const int MapSizeSquared = MapSize*MapSize;
 
+        public static ZPackage Default()
+        {
+            var z = new ZPackage();
+            z.Write((int) 3);
+            z.Write( MapSize);
+            for (var i = 0; i < MapSizeSquared; i++)
+            {
+                z.Write(false);
+            }
+            z.Write((int) 0);
+            z.SetPos(0);
+            return z;
+        }
+        
+        public static void SetMapData(ZPackage mapData)
+        {
+            var version = mapData.ReadInt();
+            var mapSize = mapData.ReadInt();
+
+            var explored = new bool[mapSize * mapSize];
+            for (var i = 0; i < mapSize * mapSize; i++)
+            {
+                explored[i] = mapData.ReadBool();
+            }
+
+            var pinCount = mapData.ReadInt();
+
+            Explored = explored;
+        }
+
+        public static ZPackage GetMapData()
+        {
+            var z = new ZPackage();
+
+            z.Write((int) 3);
+            z.Write(MapSize);
+
+            for (var i = 0; i < Explored.Length; i++)
+            {
+                z.Write(Explored[i]);
+            }
+            
+            z.Write((int) 0);
+            
+            return z;
+        }
+        
         public static void SetExplored(int x, int y)
         {
-            MapData[(y * MapSize + x) + 8] = 0x01;
+            Explored[(y * MapSize + x)] = true;
         }
         
         public static bool GetExplored(int x, int y)
         {
-            return MapData[(y * MapSize + x) + 8] != 0;
+            return Explored[(y * MapSize + x)];
         }
         
         public static bool GetExplored(int idx)
         {
-            return  MapData[idx + 8] != 0;
+            return  Explored[idx];
         }
 
         // TODO: Optimize
         public static bool[] GetExplorationArray()
         {
-            var size = MapSize * MapSize;
-            var arr = new bool[size];
-
-            for (var i = 0; i < (size); i++)
-            {
-                arr[i] =  Convert.ToBoolean(MapData[i + 8]);
-            }
-            return arr;
+            return Explored;
         }
 
         public static void MergeExplorationArray(bool[] arr, int startIndex, int size)
         {
             for (var i = 0; i < size; i++)
             {
-                MapData[startIndex + i + 8] = arr[i] ? (byte) 0x01: MapData[startIndex + i + 8];
+                Explored[startIndex + i] = arr[i] || Explored[startIndex + i];
             }
         }
         
@@ -119,8 +159,6 @@ namespace ServerSideMap
             var flag = _Minimap.Explore(m, x, y);
             _dirty = flag || _dirty;
         }
-        
-
         
         [HarmonyPatch(typeof (Minimap), "Explore", typeof(Vector3), typeof(float))]
         private  class MinimapPatchExploreInterval
