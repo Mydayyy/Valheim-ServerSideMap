@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using HarmonyLib;
 using UnityEngine;
 using BepInEx.Logging;
@@ -11,6 +12,8 @@ namespace ServerSideMap
         public static bool[] Explored;
         public const int MapSize = 2048; // TODO: Find out where to retrieve this from
         public const int MapSizeSquared = MapSize*MapSize;
+        
+        private static List<PinData> Pins = new List<PinData>();
 
         public static ZPackage Default()
         {
@@ -172,5 +175,13 @@ namespace ServerSideMap
                 _dirty = false;
             }
         }
+    }
+    
+    public class PinData
+    {
+        public string Name;
+        public Minimap.PinType Type;
+        public Vector3 Pos;
+        public bool Checked;
     }
 }

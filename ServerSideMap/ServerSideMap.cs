@@ -28,6 +28,7 @@ namespace ServerSideMap
 
                     peer.m_rpc.Register<int, int>("OnClientExplore", new Action<ZRpc, int, int>(ExplorationMapSync.OnClientExplore));
                     peer.m_rpc.Register<ZPackage>("OnClientInitialData", new Action<ZRpc, ZPackage>(InitialMapSync.OnClientInitialData));
+                    peer.m_rpc.Register<ZPackage>("OnClientInitialDataPin", new Action<ZRpc, ZPackage>(InitialPinSync.OnClientInitialDataPin));
                 }
                 else
                 {
@@ -35,6 +36,7 @@ namespace ServerSideMap
                     
                     peer.m_rpc.Register<ZPackage>("OnReceiveMapData", new Action<ZRpc, ZPackage>(ExplorationDatabase.OnReceiveMapData));
                     peer.m_rpc.Register<ZPackage>("OnReceiveMapDataInitial", new Action<ZRpc, ZPackage>(InitialMapSync.OnReceiveMapDataInitial));
+                    peer.m_rpc.Register<ZPackage>("OnReceiveInitialDataPin", new Action<ZRpc, ZPackage>(InitialPinSync.OnReceiveInitialDataPin));
                 }
             }
         }
