@@ -1,5 +1,6 @@
 using System;
 using HarmonyLib;
+using UnityEngine;
 
 namespace ServerSideMap
 {
@@ -20,11 +21,29 @@ namespace ServerSideMap
             }
         }
         
-            [HarmonyReversePatch]
-            [HarmonyPatch(typeof(Minimap), "Explore", typeof(int), typeof(int))]
-            public static bool Explore(Minimap instance, int x, int y)
-            {
-                throw new NotImplementedException();
+        [HarmonyReversePatch]
+        [HarmonyPatch(typeof(Minimap), "Explore", typeof(int), typeof(int))]
+        public static bool Explore(Minimap instance, int x, int y)
+        {
+            throw new NotImplementedException();
+        }
+        
+        [HarmonyReversePatch]
+        [HarmonyPatch(typeof(Minimap), "AddPin", typeof(Vector3), typeof(Minimap.PinType), typeof(string), typeof(bool), typeof(bool))]
+        public static Minimap.PinData AddPin(Minimap instance, Vector3 pos,
+            Minimap.PinType type,
+            string name,
+            bool save,
+            bool isChecked)
+        {
+            throw new NotImplementedException();
+        }
+        
+        [HarmonyReversePatch]
+        [HarmonyPatch(typeof(Minimap), "RemovePin", typeof(Minimap.PinData))]
+        public static void RemovePin(Minimap instance, Minimap.PinData pin)
+        {
+            throw new NotImplementedException();
         }
     }
 }

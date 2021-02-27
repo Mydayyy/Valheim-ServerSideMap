@@ -69,6 +69,7 @@
     <Compile Include="ExplorationMapSync.cs" />
     <Compile Include="InitialMapSync.cs" />
     <Compile Include="InitialPinSync.cs" />
+    <Compile Include="PinSync.cs" />
     <Compile Include="SaveWorld.cs" />
     <Compile Include="ServerSideMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

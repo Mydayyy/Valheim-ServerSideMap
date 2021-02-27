@@ -29,6 +29,8 @@ namespace ServerSideMap
                     peer.m_rpc.Register<int, int>("OnClientExplore", new Action<ZRpc, int, int>(ExplorationMapSync.OnClientExplore));
                     peer.m_rpc.Register<ZPackage>("OnClientInitialData", new Action<ZRpc, ZPackage>(InitialMapSync.OnClientInitialData));
                     peer.m_rpc.Register<ZPackage>("OnClientInitialDataPin", new Action<ZRpc, ZPackage>(InitialPinSync.OnClientInitialDataPin));
+                    peer.m_rpc.Register<ZPackage>("OnClientAddPin", new Action<ZRpc, ZPackage>(PinSync.OnClientAddPin));
+                    peer.m_rpc.Register<ZPackage>("OnClientRemovePin", new Action<ZRpc, ZPackage>(PinSync.OnClientRemovePin));
                 }
                 else
                 {
@@ -37,6 +39,8 @@ namespace ServerSideMap
                     peer.m_rpc.Register<ZPackage>("OnReceiveMapData", new Action<ZRpc, ZPackage>(ExplorationDatabase.OnReceiveMapData));
                     peer.m_rpc.Register<ZPackage>("OnReceiveMapDataInitial", new Action<ZRpc, ZPackage>(InitialMapSync.OnReceiveMapDataInitial));
                     peer.m_rpc.Register<ZPackage>("OnReceiveInitialDataPin", new Action<ZRpc, ZPackage>(InitialPinSync.OnReceiveInitialDataPin));
+                    peer.m_rpc.Register<ZPackage>("OnServerAddPin", new Action<ZRpc, ZPackage>(PinSync.OnServerAddPin));
+                    peer.m_rpc.Register<ZPackage>("OnServerRemovePin", new Action<ZRpc, ZPackage>(PinSync.OnServerRemovePin));
                 }
             }
         }

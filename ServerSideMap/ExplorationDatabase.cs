@@ -14,6 +14,8 @@ namespace ServerSideMap
         public const int MapSizeSquared = MapSize*MapSize;
         
         private static List<PinData> Pins = new List<PinData>();
+        
+        public static List<PinData> ClientPins = new List<PinData>();
 
         public static ZPackage Default()
         {
@@ -28,6 +30,102 @@ namespace ServerSideMap
             z.SetPos(0);
             return z;
         }
+
+        public static ZPackage PackPins(List<PinData> pins)
+        {
+            var z = new ZPackage();
+            z.Write((int) pins.Count);
+            foreach (var pin in pins)
+            {
+                z.Write(pin.Name);
+                z.Write(pin.Pos);
+                z.Write((int) pin.Type);
+                z.Write(pin.Checked);
+            }
+            z.SetPos(0);
+            return z;
+        }
+
+        public static List<PinData> UnpackPins(ZPackage z)
+        {
+            var pins = new List<PinData>();
+            
+            var pinCount = z.ReadInt();
+
+            for (var i = 0; i < pinCount; i++)
+            {
+                var pin = new PinData
+                {
+                    Name = z.ReadString(),
+                    Pos = z.ReadVector3(),
+                    Type = (Minimap.PinType) z.ReadInt(),
+                    Checked = z.ReadBool()
+                };
+                pins.Add(pin);
+            }
+
+            return pins;
+        }
+
+        public static List<PinData> GetPins()
+        {
+            return Pins;
+        }
+
+        public static PinData ConvertPin(Minimap.PinData pin)
+        {
+            return new PinData {
+                Name = pin.m_name,
+                Pos = pin.m_pos,
+                Type = pin.m_type,
+                Checked =  pin.m_checked
+                };
+        }
+
+        public static ZPackage PackPin(PinData pin)
+        {
+            var z = new ZPackage();
+            z.Write(pin.Name);
+            z.Write(pin.Pos);
+            z.Write((int) pin.Type);
+            z.Write(pin.Checked);
+            z.SetPos(0);
+            return z;
+        }
+
+        public static PinData UnpackPin(ZPackage z)
+        {
+            var pin = new PinData
+            {
+                Name = z.ReadString(),
+                Pos = z.ReadVector3(),
+                Type = (Minimap.PinType) z.ReadInt(),
+                Checked = z.ReadBool()
+            };
+            return pin;
+        }
+
+        public static void AddPin(PinData pin)
+        {
+            Pins.Add(pin);
+        }
+        
+        public static void RemovePinSimilar(PinData needle)
+        {
+            foreach (var pin in Pins)
+            {
+                if (ArePinsSimilar(pin, needle))
+                {
+                    Pins.Remove(pin);
+                    return;
+                }
+            }
+        }
+
+        public static bool ArePinsSimilar(PinData pin1, PinData pin2)
+        {
+            return pin1.Name == pin2.Name && pin1.Type == pin2.Type && pin1.Pos.Equals(pin2.Pos);
+        }
         
         public static void SetMapData(ZPackage mapData)
         {
@@ -41,6 +139,18 @@ namespace ServerSideMap
             }
 
             var pinCount = mapData.ReadInt();
+
+            for (var i = 0; i < pinCount; i++)
+            {
+                var pin = new PinData
+                {
+                    Name = mapData.ReadString(),
+                    Pos = mapData.ReadVector3(),
+                    Type = (Minimap.PinType) mapData.ReadInt(),
+                    Checked = mapData.ReadBool()
+                };
+                Pins.Add(pin);
+            }
 
             Explored = explored;
         }
@@ -57,7 +167,17 @@ namespace ServerSideMap
                 z.Write(t);
             }
             
-            z.Write((int) 0);
+            z.Write((int) Pins.Count);
+
+            Utility.Log("Map saved. Pin Count: " + Pins.Count);
+            
+            foreach (var pin in Pins)
+            {
+                z.Write(pin.Name);
+                z.Write(pin.Pos);
+                z.Write((int) pin.Type);
+                z.Write(pin.Checked);
+            }
             
             return z;
         }
@@ -122,7 +242,7 @@ namespace ServerSideMap
                 z.Write(currentByte);
             }
             
-            Utility.Log("Compressed exploration array:  " + size + ":" + z.Size());
+            // Utility.Log("Compressed exploration array:  " + size + ":" + z.Size());
 
             return z;
         }
@@ -146,7 +266,7 @@ namespace ServerSideMap
                 arr[i+7] = (b & (1 << 7)) != 0;
             }
 
-            Utility.Log("Decompressed exploration array:  " + z.Size() + ":" + arr.Length);
+            // Utility.Log("Decompressed exploration array:  " + z.Size() + ":" + arr.Length);
             return arr;
         }
         
