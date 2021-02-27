@@ -30,7 +30,7 @@ namespace ServerSideMap
         {
             var version = mapData.ReadInt();
             var mapSize = mapData.ReadInt();
-
+            
             var explored = new bool[mapSize * mapSize];
             for (var i = 0; i < mapSize * mapSize; i++)
             {
@@ -47,11 +47,11 @@ namespace ServerSideMap
             var z = new ZPackage();
 
             z.Write((int) 3);
-            z.Write(MapSize);
+            z.Write(Explored.Length);
 
-            for (var i = 0; i < Explored.Length; i++)
+            foreach (var t in Explored)
             {
-                z.Write(Explored[i]);
+                z.Write(t);
             }
             
             z.Write((int) 0);
