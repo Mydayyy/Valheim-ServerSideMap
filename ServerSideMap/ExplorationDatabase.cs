@@ -10,7 +10,7 @@ namespace ServerSideMap
         private static bool _dirty;
         public static byte[] MapData;
         public const int MapSize = 2048; // TODO: Find out where to retrieve this from
-        public const int MapSizeSquared = 2048*2048; // TODO: Find out where to retrieve this from
+        public const int MapSizeSquared = MapSize*MapSize;
 
         public static void SetExplored(int x, int y)
         {
@@ -50,8 +50,6 @@ namespace ServerSideMap
         
         public static ZPackage PackBoolArray(bool[] arr, int chunkId, int startIndex, int size)
         {
-            var l = BepInEx.Logging.Logger.CreateLogSource("ServerSideMap");
-            
             ZPackage z = new ZPackage();
             
             z.Write(chunkId);
@@ -81,16 +79,15 @@ namespace ServerSideMap
                 z.Write(currentByte);
             }
             
-            l.LogInfo("Compressed exploration array:  " + size + ":" + z.Size());
+            Utility.Log("Compressed exploration array:  " + size + ":" + z.Size());
 
             return z;
         }
 
         public static bool[] UnpackBoolArray(ZPackage z, int length)
         {
-            var l = BepInEx.Logging.Logger.CreateLogSource("ServerSideMap");
-            
             var arr = new bool[length];
+            
             for (var i = 0; i < length; i += 8)
             {          
 
@@ -106,7 +103,7 @@ namespace ServerSideMap
                 arr[i+7] = (b & (1 << 7)) != 0;
             }
 
-            l.LogInfo("Decompressed exploration array:  " + z.Size() + ":" + arr.Length);
+            Utility.Log("Decompressed exploration array:  " + z.Size() + ":" + arr.Length);
             return arr;
         }
         

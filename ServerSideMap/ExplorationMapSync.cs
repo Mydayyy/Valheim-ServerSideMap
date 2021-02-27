@@ -29,9 +29,6 @@ namespace ServerSideMap
                     peer.m_rpc.Invoke("OnReceiveMapData", (object) z);
                 }
             }
-            
-            // var l = BepInEx.Logging.Logger.CreateLogSource("ServerSideMap");
-            // l.LogInfo("Relaying new explore");
 
             var zz = new ZPackage();
             zz.Write(x);

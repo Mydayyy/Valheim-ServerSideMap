@@ -12,8 +12,6 @@ namespace ServerSideMap
             // ReSharper disable once InconsistentNaming
             private static void Postfix(ZNet __instance)
             {
-                var l = BepInEx.Logging.Logger.CreateLogSource("ServerSideMap");
-                
                 var world =  Traverse.Create(typeof(ZNet)).Field("m_world").GetValue() as World;
                 var worldSavePath =  Traverse.Create(world).Field("m_worldSavePath").GetValue() as String;
                 var exploredPath = worldSavePath + "/" + world.m_name + ".mod.serversidemap.explored";
@@ -35,13 +33,13 @@ namespace ServerSideMap
                     }
                     z.Write(0);
                     ExplorationDatabase.MapData = z.GetArray();
-                    l.LogInfo("new explore file generated");
+                    Utility.Log("new explore file generated");
                     __instance.Save(true);
                     return;
                 }
                 BinaryReader reader = new BinaryReader(fileStream);
                 ExplorationDatabase.MapData = reader.ReadBytes(int.MaxValue);
-                l.LogInfo("loaded from existing explore file");
+                Utility.Log("loaded from existing explore file");
             }
         }
 
