@@ -15,7 +15,7 @@ namespace ServerSideMap
             private static void Postfix(Minimap __instance)
             {
                 _instance = __instance;
-                var l = BepInEx.Logging.Logger.CreateLogSource("SSM");
+                var l = BepInEx.Logging.Logger.CreateLogSource("ServerSideMap");
                 l.LogInfo("Minimap awake");
             }
         }
