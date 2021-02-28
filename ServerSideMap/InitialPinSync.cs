@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using BepInEx.Configuration;
 using HarmonyLib;
 
 namespace ServerSideMap
@@ -7,8 +8,11 @@ namespace ServerSideMap
     {
         public static void OnReceiveInitialDataPin(ZRpc client, ZPackage pinData)
         {
-            
             // SendPinsToServer(client);
+
+            Store.ServerPinShare = true;
+            
+            if (!Store.IsSharingPin()) return;
 
             var pins = ExplorationDatabase.UnpackPins(pinData);
 
@@ -20,8 +24,16 @@ namespace ServerSideMap
 
         private static void ClientAppendPins()
         {
+            if (!Store.IsSharingPin()) return;
+            
+            Utility.Log("ClientAppendPins " + ExplorationDatabase.ClientPins.Count);
             foreach (var pin in ExplorationDatabase.ClientPins)
             {
+                var mapPin = PinSync.GetMapPin(pin);
+                if (mapPin != null)
+                {
+                    _Minimap.RemovePin(_Minimap._instance, mapPin);
+                }
                 _Minimap.AddPin(_Minimap._instance, pin.Pos, pin.Type, pin.Name, false, pin.Checked);
             }
         }
@@ -29,11 +41,12 @@ namespace ServerSideMap
         public static void OnClientInitialDataPin(ZRpc client, ZPackage pinData)
         {
             Utility.Log("Server received initial pin data by client");
-
         }
         
         private static void SendPinsToClient(ZRpc client)
         {
+            if (!Store.IsSharingPin()) return;
+            
             var z = ExplorationDatabase.PackPins(ExplorationDatabase.GetPins());
             
             if (client == null)

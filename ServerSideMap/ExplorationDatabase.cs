@@ -43,6 +43,7 @@ namespace ServerSideMap
                 z.Write(pin.Checked);
             }
             z.SetPos(0);
+            Utility.Log("Packing pins: " + pins.Count);
             return z;
         }
 
@@ -82,14 +83,15 @@ namespace ServerSideMap
                 };
         }
 
-        public static ZPackage PackPin(PinData pin)
+        public static ZPackage PackPin(PinData pin, bool skipSetPos = false)
         {
             var z = new ZPackage();
             z.Write(pin.Name);
             z.Write(pin.Pos);
             z.Write((int) pin.Type);
             z.Write(pin.Checked);
-            z.SetPos(0);
+            if(!skipSetPos) 
+                z.SetPos(0);
             return z;
         }
 
@@ -122,6 +124,18 @@ namespace ServerSideMap
             }
         }
 
+        public static void SetPinState(PinData needle, bool state)
+        {
+            foreach (var pin in Pins)
+            {
+                if (ArePinsSimilar(pin, needle))
+                {
+                    pin.Checked = state;
+                    return;
+                }
+            }
+        }
+
         public static bool ArePinsSimilar(PinData pin1, PinData pin2)
         {
             return pin1.Name == pin2.Name && pin1.Type == pin2.Type && pin1.Pos.Equals(pin2.Pos);
@@ -129,6 +143,8 @@ namespace ServerSideMap
         
         public static void SetMapData(ZPackage mapData)
         {
+            Pins.Clear();
+            
             var version = mapData.ReadInt();
             var mapSize = mapData.ReadInt();
             

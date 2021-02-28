@@ -11,6 +11,8 @@ namespace ServerSideMap
 
         public static void OnReceiveMapDataInitial(ZRpc client, ZPackage mapData)
         {
+            if (!Store.IsSharingMap()) return;
+            
             mapData.SetPos(0);
             
             var chunk = mapData.ReadInt();
@@ -61,6 +63,8 @@ namespace ServerSideMap
         
         public static void OnClientInitialData(ZRpc client,  ZPackage mapData)
         {
+            if (!Store.IsSharingMap()) return;
+            
             mapData.SetPos(0);
             
             var chunk = mapData.ReadInt();
@@ -80,6 +84,8 @@ namespace ServerSideMap
             // ReSharper disable once InconsistentNaming
             private static void Postfix(ZRpc rpc, ZNet __instance)
             {
+                if (!Store.IsSharingMap()) return;
+                
                 if (__instance.IsServer())
                 {
                     SendChunkToClient(rpc, 0);
@@ -131,6 +137,8 @@ namespace ServerSideMap
             // ReSharper disable once InconsistentNaming
             private static void Postfix(Minimap __instance)
             {
+                if (!Store.IsSharingMap()) return;
+                
                 if (_ZNet.IsServer(_ZNet._instance))
                 {
                     SendChunkToClient(null, 0);

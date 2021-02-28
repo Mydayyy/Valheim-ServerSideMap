@@ -17,6 +17,7 @@ namespace ServerSideMap
                 _instance = __instance;
                 var l = BepInEx.Logging.Logger.CreateLogSource("ServerSideMap");
                 l.LogInfo("ZNet awake");
+                Store.ServerPinShare = false;
             }
         }
         

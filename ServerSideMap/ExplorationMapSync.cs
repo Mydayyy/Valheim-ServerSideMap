@@ -10,6 +10,8 @@ namespace ServerSideMap
         
         public static void OnClientExplore(ZRpc client, int  x, int y)
         {
+            if (!Store.IsSharingMap()) return;
+            
             ExplorationDatabase.SetExplored(x, y);
             var znet =  Traverse.Create(typeof(ZNet)).Field("m_instance").GetValue() as ZNet;
             var mPeers = Traverse.Create((znet)).Field("m_peers").GetValue() as List<ZNetPeer>;
@@ -51,6 +53,7 @@ namespace ServerSideMap
 
                 if (_blockExplore) return;
 
+                if (!Store.IsSharingMap()) return;
                 if (_ZNet.IsServer(_ZNet._instance))
                 {
                     OnClientExplore(null, x, y);
