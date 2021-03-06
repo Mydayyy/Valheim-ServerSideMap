@@ -13,6 +13,7 @@ namespace ServerSideMap
         public static void OnClientAddPin(ZRpc client, ZPackage pinData)
         {
             if (!Store.IsSharingPin()) return;
+            pinData.SetPos(0);
             
             var znet =  Traverse.Create(typeof(ZNet)).Field("m_instance").GetValue() as ZNet;
             var mPeers = Traverse.Create((znet)).Field("m_peers").GetValue() as List<ZNetPeer>;
@@ -33,11 +34,17 @@ namespace ServerSideMap
                     peer.m_rpc.Invoke("OnServerAddPin", (object) ExplorationDatabase.PackPin(pin));
                 }
             }
+
+            if (client != null)
+            {
+                OnServerAddPin(null, ExplorationDatabase.PackPin(pin));
+            }
         }
         
         public static void OnServerAddPin(ZRpc client, ZPackage pinData)
         {
             if (!Store.IsSharingPin()) return;
+            pinData.SetPos(0);
             
             var pin = ExplorationDatabase.UnpackPin(pinData);
             
@@ -51,6 +58,7 @@ namespace ServerSideMap
         public static void OnClientRemovePin(ZRpc client, ZPackage pinData)
         {
             if (!Store.IsSharingPin()) return;
+            pinData.SetPos(0);
             
             var znet =  Traverse.Create(typeof(ZNet)).Field("m_instance").GetValue() as ZNet;
             var mPeers = Traverse.Create((znet)).Field("m_peers").GetValue() as List<ZNetPeer>;
@@ -71,11 +79,17 @@ namespace ServerSideMap
                     peer.m_rpc.Invoke("OnServerRemovePin", (object) ExplorationDatabase.PackPin(pin));
                 }
             }
+            
+            if (client != null)
+            {
+                OnServerRemovePin(null, ExplorationDatabase.PackPin(pin));
+            }
         }
         
         public static void OnServerRemovePin(ZRpc client, ZPackage pinData)
         {
             if (!Store.IsSharingPin()) return;
+            pinData.SetPos(0);
             
             Utility.Log("Client deleted pin by server");
             
@@ -102,6 +116,7 @@ namespace ServerSideMap
         public static void OnClientCheckPin(ZRpc client, ZPackage data)
         {
             if (!Store.IsSharingPin()) return;
+            data.SetPos(0);
             
             Utility.Log("Server checked pin by client");
 
@@ -125,11 +140,19 @@ namespace ServerSideMap
                     peer.m_rpc.Invoke("OnServerCheckPin", (object) z);
                 }
             }
+            
+            if (client != null)
+            {
+                var z = ExplorationDatabase.PackPin(pin, true);
+                z.Write(state);
+                OnServerCheckPin(null, z);
+            }
         }
         
         public static void OnServerCheckPin(ZRpc client, ZPackage data)
         {
             if (!Store.IsSharingPin()) return;
+            data.SetPos(0);
             
             Utility.Log("Client checked pin by server");
             
