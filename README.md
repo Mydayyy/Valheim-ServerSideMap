@@ -52,3 +52,6 @@ You need to copy the following dlls into the Libs folder:
 - UnityEngine.dll
 - UnityEngine.ImageConversionModule.dll
 - UnityEngine.UI.dll
+
+## KoFi
+My kofi can be found [here](https://ko-fi.com/mydayyy)
