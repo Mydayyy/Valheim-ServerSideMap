@@ -1,5 +1,6 @@
 using System;
 using System.IO;
+using System.Runtime.InteropServices;
 using HarmonyLib;
 
 namespace ServerSideMap
@@ -30,7 +31,8 @@ namespace ServerSideMap
                     return;
                 }
                 BinaryReader reader = new BinaryReader(fileStream);
-                var data = reader.ReadBytes(int.MaxValue);
+                // var data = reader.ReadBytes(int.MaxValue);
+                var data = reader.ReadAllBytes();
                 var z = new ZPackage(data);
                 ExplorationDatabase.SetMapData(z);
                 Utility.Log("loaded from existing explore file");
