@@ -18,6 +18,7 @@ namespace ServerSideMap
             
             Store.EnableMapShare = Config.Bind("General", "EnableMapShare", true, "Client: Whether or not to participate in sharing the map. Server: Whether or not to allow map sharing");
             Store.EnablePinShare = Config.Bind("General", "EnableMarkerShare", false, "Client: Whether or not to participate in sharing markers. Server: Whether or not to allow marker sharing");
+            Store.DuplicatePinRadius = Config.Bind("PinShare", "DuplicatePinRadius", 15.0f, "A local pin will not be uploaded if a pin exists in the given radius on the server (when using /convertpins removelocaldupes)");
         }
 
         [HarmonyPatch(typeof (ZNet), "OnNewConnection")]

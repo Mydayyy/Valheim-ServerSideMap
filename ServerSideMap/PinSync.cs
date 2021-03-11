@@ -184,14 +184,14 @@ namespace ServerSideMap
             }
         }
 
-        public static void SendPinToServer(Minimap.PinData pin)
+        public static void SendPinToServer(Minimap.PinData pin, bool deletePin = true)
         {
             if (!Store.IsSharingPin()) return;
             
             var convertedPin = ExplorationDatabase.ConvertPin(pin);
             var data = ExplorationDatabase.PackPin(convertedPin);
 
-            pin.m_save = false;
+            pin.m_save = !deletePin;
             ExplorationDatabase.ClientPins.Add(convertedPin);
 
             if (!_ZNet.IsServer(_ZNet._instance))
@@ -210,6 +210,8 @@ namespace ServerSideMap
             
             var data = ExplorationDatabase.PackPin(pin);
 
+            ExplorationDatabase.ClientPins.Remove(pin);
+ 
             if (!_ZNet.IsServer(_ZNet._instance))
             {
                 _ZNet.GetServerRPC(_ZNet._instance).Invoke("OnClientRemovePin", data);

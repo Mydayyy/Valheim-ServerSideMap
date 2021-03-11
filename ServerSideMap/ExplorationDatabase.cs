@@ -114,10 +114,13 @@ namespace ServerSideMap
         
         public static void RemovePinSimilar(PinData needle)
         {
+            Utility.Log("Removing Pin");
             foreach (var pin in Pins)
             {
                 if (ArePinsSimilar(pin, needle))
                 {
+                    Utility.Log("Removed Pin");
+
                     Pins.Remove(pin);
                     return;
                 }
@@ -139,6 +142,12 @@ namespace ServerSideMap
         public static bool ArePinsSimilar(PinData pin1, PinData pin2)
         {
             return pin1.Name == pin2.Name && pin1.Type == pin2.Type && pin1.Pos.Equals(pin2.Pos);
+        }
+
+        public static bool ArePinsDupes(Minimap.PinData pin1, PinData pin2, float radius)
+        {
+            Utility.Log("Distance: " + Utils.DistanceXZ(pin1.m_pos, pin2.Pos));
+            return Utils.DistanceXZ(pin1.m_pos, pin2.Pos) < radius;
         }
         
         public static void SetMapData(ZPackage mapData)
