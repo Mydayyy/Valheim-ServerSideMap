@@ -25,42 +25,6 @@ namespace ServerSideMap
                     ms.Write(buffer, 0, count);
                 return ms.ToArray();
             }
-    
-        }
-
-        public static bool LocalPinIsDupe(Minimap.PinData pin)
-        {
-            foreach(var serverpin in  ExplorationDatabase.ClientPins)
-            {
-                if (ExplorationDatabase.ArePinsDupes(pin, serverpin, Store.GetDuplicatePinRadius()))
-                    return true;
-            }
-
-            return false;
-        }
-
-        public static void UploadAllPins(bool removeDupes = false)
-        {
-            var pins = Traverse.Create(_Minimap._instance).Field("m_pins").GetValue() as List<Minimap.PinData>;
-
-            foreach (var pin in pins)
-            {
-                if (!pin.m_save) continue;
-                if(!removeDupes || !LocalPinIsDupe(pin))
-                    PinSync.SendPinToServer(pin, false);
-            }
-        }
-
-        public static void DeleteLocalPins()
-        {
-            var pins = Traverse.Create(_Minimap._instance).Field("m_pins").GetValue() as List<Minimap.PinData>;
-
-            foreach (var pin in pins)
-            {
-                Utility.Log("Save: " + pin.m_save);
-                if(pin.m_save)
-                    _Minimap.RemovePin(_Minimap._instance, pin);
-            }
         }
     }
 }

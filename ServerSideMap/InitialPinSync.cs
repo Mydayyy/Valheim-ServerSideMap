@@ -29,7 +29,7 @@ namespace ServerSideMap
             Utility.Log("ClientAppendPins " + ExplorationDatabase.ClientPins.Count);
             foreach (var pin in ExplorationDatabase.ClientPins)
             {
-                var mapPin = PinSync.GetMapPin(pin);
+                var mapPin = UtilityPin.GetMapPin(pin);
                 if (mapPin != null)
                 {
                     _Minimap.RemovePin(_Minimap._instance, mapPin);
@@ -68,7 +68,7 @@ namespace ServerSideMap
             {
                 if (pin.m_save)
                 {
-                    filteredPins.Add(ExplorationDatabase.ConvertPin(pin));
+                    filteredPins.Add(UtilityPin.ConvertPin(pin));
                 }
             }
 

@@ -64,7 +64,7 @@ namespace ServerSideMap
             var mPeers = Traverse.Create((znet)).Field("m_peers").GetValue() as List<ZNetPeer>;
 
             var pin = ExplorationDatabase.UnpackPin(pinData);
-            ExplorationDatabase.RemovePinSimilar(pin);
+            ExplorationDatabase.RemovePinEqual(pin);
             
             Utility.Log("Server deleted pin by client");
             
@@ -97,14 +97,14 @@ namespace ServerSideMap
             
             foreach (var clientPin in ExplorationDatabase.ClientPins)
             {
-                if (ExplorationDatabase.ArePinsSimilar(clientPin, pin))
+                if (UtilityPin.ArePinsEqual(clientPin, pin))
                 {
                     ExplorationDatabase.ClientPins.Remove(clientPin);
                     break;
                 }
             }
 
-            var mapPin = GetMapPin(pin);
+            var mapPin = UtilityPin.GetMapPin(pin);
 
             if (mapPin == null)
             {
@@ -161,10 +161,10 @@ namespace ServerSideMap
             
             foreach (var clientPin in ExplorationDatabase.ClientPins)
             {
-                if (ExplorationDatabase.ArePinsSimilar(clientPin, pin))
+                if (UtilityPin.ArePinsEqual(clientPin, pin))
                 {
                     clientPin.Checked = state;
-                    var mapPin = GetMapPin(clientPin);
+                    var mapPin = UtilityPin.GetMapPin(clientPin);
                     if (mapPin != null)
                     {
                         mapPin.m_checked = state;
@@ -188,7 +188,7 @@ namespace ServerSideMap
         {
             if (!Store.IsSharingPin()) return;
             
-            var convertedPin = ExplorationDatabase.ConvertPin(pin);
+            var convertedPin = UtilityPin.ConvertPin(pin);
             var data = ExplorationDatabase.PackPin(convertedPin);
 
             pin.m_save = !deletePin;
@@ -258,37 +258,6 @@ namespace ServerSideMap
         //     }
         //     return pinData;
         // }
-
-        public static bool ArePinsEqual(PinData pin1, Minimap.PinData pin2)
-        {
-            return pin1.Name == pin2.m_name && pin1.Type == pin2.m_type && pin1.Pos.Equals(pin2.m_pos);
-        }
-
-        public static Minimap.PinData GetMapPin(PinData needle)
-        {
-            var pins = Traverse.Create(_Minimap._instance).Field("m_pins").GetValue() as List<Minimap.PinData>;
-
-            foreach (var pin in pins)
-            {
-                if (ArePinsEqual(needle, pin))
-                {
-                    return pin;
-                }
-            }
-            return null;
-        }
-        
-        public static PinData GetClientPin(Minimap.PinData needle)
-        {
-            foreach (var pin in ExplorationDatabase.ClientPins)
-            {
-                if (ArePinsEqual(pin, needle))
-                {
-                    return pin;
-                }
-            }
-            return null;
-        }
         
         // public void OnMapLeftClick()
         // {
@@ -307,7 +276,7 @@ namespace ServerSideMap
             {
                 if (LatestClosestPin == null) return;
 
-                var clientPin = GetClientPin(LatestClosestPin);
+                var clientPin = UtilityPin.GetClientPin(LatestClosestPin);
 
                 if (clientPin == null) return;
 
@@ -341,7 +310,7 @@ namespace ServerSideMap
 
                 if (pinData == null) return;
                 
-                var pin = GetMapPin(pinData);
+                var pin = UtilityPin.GetMapPin(pinData);
                 if (__result == null)
                 {
                     __result = pin;
@@ -364,7 +333,7 @@ namespace ServerSideMap
             // ReSharper disable once InconsistentNaming
             private static void Postfix(Minimap __instance, Minimap.PinData pin)
             {
-                var clientPin = GetClientPin(pin);
+                var clientPin = UtilityPin.GetClientPin(pin);
 
                 if (clientPin == null) return;
                 

@@ -76,6 +76,7 @@
     <Compile Include="ServerSideMap.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utility.cs" />
+    <Compile Include="UtilityPin.cs" />
     <Compile Include="_Minimap.cs" />
     <Compile Include="_ZNet.cs" />
   </ItemGroup>
