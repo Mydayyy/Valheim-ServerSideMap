@@ -84,7 +84,6 @@ namespace ServerSideMap
 
             foreach (var pin in pins)
             {
-                Utility.Log("Save: " + pin.m_save);
                 if(pin.m_save)
                     _Minimap.RemovePin(_Minimap._instance, pin);
             }
