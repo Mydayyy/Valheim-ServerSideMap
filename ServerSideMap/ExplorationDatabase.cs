@@ -13,8 +13,7 @@ namespace ServerSideMap
         public const int MapSize = 2048; // TODO: Find out where to retrieve this from
         public const int MapSizeSquared = MapSize*MapSize;
         
-        private static List<PinData> Pins = new List<PinData>();
-        
+        private static List<PinData> ServerPins = new List<PinData>();
         public static List<PinData> ClientPins = new List<PinData>();
 
         public static ZPackage Default()
@@ -67,22 +66,7 @@ namespace ServerSideMap
 
             return pins;
         }
-
-        public static List<PinData> GetPins()
-        {
-            return Pins;
-        }
-
-        public static PinData ConvertPin(Minimap.PinData pin)
-        {
-            return new PinData {
-                Name = pin.m_name,
-                Pos = pin.m_pos,
-                Type = pin.m_type,
-                Checked =  pin.m_checked
-                };
-        }
-
+        
         public static ZPackage PackPin(PinData pin, bool skipSetPos = false)
         {
             var z = new ZPackage();
@@ -107,21 +91,23 @@ namespace ServerSideMap
             return pin;
         }
 
+        public static List<PinData> GetPins()
+        {
+            return ServerPins;
+        }
+
         public static void AddPin(PinData pin)
         {
-            Pins.Add(pin);
+            ServerPins.Add(pin);
         }
         
-        public static void RemovePinSimilar(PinData needle)
+        public static void RemovePinEqual(PinData needle)
         {
-            Utility.Log("Removing Pin");
-            foreach (var pin in Pins)
+            foreach (var pin in ServerPins)
             {
-                if (ArePinsSimilar(pin, needle))
+                if (UtilityPin.ArePinsEqual(pin, needle))
                 {
-                    Utility.Log("Removed Pin");
-
-                    Pins.Remove(pin);
+                    ServerPins.Remove(pin);
                     return;
                 }
             }
@@ -129,30 +115,19 @@ namespace ServerSideMap
 
         public static void SetPinState(PinData needle, bool state)
         {
-            foreach (var pin in Pins)
+            foreach (var pin in ServerPins)
             {
-                if (ArePinsSimilar(pin, needle))
+                if (UtilityPin.ArePinsEqual(pin, needle))
                 {
                     pin.Checked = state;
                     return;
                 }
             }
         }
-
-        public static bool ArePinsSimilar(PinData pin1, PinData pin2)
-        {
-            return pin1.Name == pin2.Name && pin1.Type == pin2.Type && pin1.Pos.Equals(pin2.Pos);
-        }
-
-        public static bool ArePinsDupes(Minimap.PinData pin1, PinData pin2, float radius)
-        {
-            Utility.Log("Distance: " + Utils.DistanceXZ(pin1.m_pos, pin2.Pos));
-            return Utils.DistanceXZ(pin1.m_pos, pin2.Pos) < radius;
-        }
         
         public static void SetMapData(ZPackage mapData)
         {
-            Pins.Clear();
+            ServerPins.Clear();
             
             var version = mapData.ReadInt();
             var mapSize = mapData.ReadInt();
@@ -174,7 +149,7 @@ namespace ServerSideMap
                     Type = (Minimap.PinType) mapData.ReadInt(),
                     Checked = mapData.ReadBool()
                 };
-                Pins.Add(pin);
+                ServerPins.Add(pin);
             }
 
             Explored = explored;
@@ -192,11 +167,11 @@ namespace ServerSideMap
                 z.Write(t);
             }
             
-            z.Write((int) Pins.Count);
+            z.Write((int) ServerPins.Count);
 
-            Utility.Log("Map saved. Pin Count: " + Pins.Count);
+            Utility.Log("Map saved. Pin Count: " + ServerPins.Count);
             
-            foreach (var pin in Pins)
+            foreach (var pin in ServerPins)
             {
                 z.Write(pin.Name);
                 z.Write(pin.Pos);

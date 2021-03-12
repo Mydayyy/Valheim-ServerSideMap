@@ -17,17 +17,17 @@ namespace ServerSideMap
 
                 if (text.ToLower().Equals("/convertpins removelocaldupes"))
                 {
-                    Utility.UploadAllPins(true);
+                    UtilityPin.UploadAllPins(true);
                     return false;
                 }
                 if (text.ToLower().Equals("/convertpins"))
                 {
-                    Utility.UploadAllPins();
+                    UtilityPin.UploadAllPins();
                     return false;
                 }
                 if (text.ToLower().Equals("/deletealllocalpins"))
                 {
-                    Utility.DeleteLocalPins();
+                    UtilityPin.DeleteLocalPins();
                     return false;
                 }
                 return true;
