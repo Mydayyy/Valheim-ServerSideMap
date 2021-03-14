@@ -14,7 +14,7 @@ explored area.
 2. Restart Server and Client
 
 ## How it works 
-####(If you didnt read any other text, please at least read this one)
+#### (If you didnt read any other text, please at least read this one)
 #### **Marker Share:**
 1) **MARKERS DEFAULT TO FALSE AND NEED TO BE ENABLED IF YOU WANT TO USE THAT FEATURE**
 2) The config file will be created after your first launch with the new version. You can edit the config files inside BepInEx/config/eu.mydayyy.plugins.serversidemap.cfg
@@ -34,6 +34,13 @@ explored area.
 The pin and exploration data is saved along with the map in a new file.
 
 You can toggle marker and map share separately, refer to Marker Share  2&3 for instruction
+
+#### **Commands:**
+Currently there are three available chat commands:
+
+- **/convertpins**: Uploads  all pins which are currently clientside to the server.
+- **/convertpins removelocaldupes**: Uploads all pins which are currently clientside to the server. Pins which have a pin on the server near them are _not_ uploaded. Default radius 15.0, can be adjusted in the config.
+- **/deletealllocalpins**: **DELETES** all local pins. Those will not be recoverable, use it when you are absolutely sure you want to do that.
 
 ## Bug Reports
 Please use [Github](https://github.com/Mydayyy/Valheim-ServerSideMap/issues) for bug reports and feedback.
