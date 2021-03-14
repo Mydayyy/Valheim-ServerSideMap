@@ -73,8 +73,13 @@ namespace ServerSideMap
             foreach (var pin in pins)
             {
                 if (!pin.m_save) continue;
-                if(!removeDupes || !LocalPinIsDupe(pin))
+                if (!removeDupes || !LocalPinIsDupe(pin))
+                {
                     PinSync.SendPinToServer(pin, false);
+                    var pin1 = UtilityPin.ConvertPin(pin);
+                    _Minimap.AddPin(_Minimap._instance, pin1.Pos, pin1.Type, pin1.Name, false, pin1.Checked);
+                    ExplorationDatabase.ClientPins.Add(pin1);
+                }
             }
         }
 

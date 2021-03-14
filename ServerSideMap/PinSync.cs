@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using HarmonyLib;
 using UnityEngine;
 
@@ -86,7 +87,7 @@ namespace ServerSideMap
             }
         }
         
-        public static void OnServerRemovePin(ZRpc client, ZPackage pinData)
+        public static void OnServerRemovePin(ZRpc _, ZPackage pinData)
         {
             if (!Store.IsSharingPin()) return;
             pinData.SetPos(0);
@@ -95,12 +96,11 @@ namespace ServerSideMap
             
             var pin = ExplorationDatabase.UnpackPin(pinData);
             
-            foreach (var clientPin in ExplorationDatabase.ClientPins)
+            foreach (var clientPin in ExplorationDatabase.ClientPins.ToList())
             {
                 if (UtilityPin.ArePinsEqual(clientPin, pin))
                 {
                     ExplorationDatabase.ClientPins.Remove(clientPin);
-                    break;
                 }
             }
 
@@ -159,7 +159,7 @@ namespace ServerSideMap
             var pin = ExplorationDatabase.UnpackPin(data);
             var state = data.ReadBool();
             
-            foreach (var clientPin in ExplorationDatabase.ClientPins)
+            foreach (var clientPin in ExplorationDatabase.ClientPins.ToList())
             {
                 if (UtilityPin.ArePinsEqual(clientPin, pin))
                 {
@@ -169,7 +169,6 @@ namespace ServerSideMap
                     {
                         mapPin.m_checked = state;
                     }
-                    break;
                 }
             }
         }
