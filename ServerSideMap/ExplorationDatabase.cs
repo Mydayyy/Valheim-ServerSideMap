@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using HarmonyLib;
 using UnityEngine;
 using BepInEx.Logging;
@@ -103,24 +104,22 @@ namespace ServerSideMap
         
         public static void RemovePinEqual(PinData needle)
         {
-            foreach (var pin in ServerPins)
+            foreach (var pin in ServerPins.ToList())
             {
                 if (UtilityPin.ArePinsEqual(pin, needle))
                 {
                     ServerPins.Remove(pin);
-                    return;
                 }
             }
         }
 
         public static void SetPinState(PinData needle, bool state)
         {
-            foreach (var pin in ServerPins)
+            foreach (var pin in ServerPins.ToList())
             {
                 if (UtilityPin.ArePinsEqual(pin, needle))
                 {
                     pin.Checked = state;
-                    return;
                 }
             }
         }
