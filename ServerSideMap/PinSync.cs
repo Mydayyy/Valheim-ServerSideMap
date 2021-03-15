@@ -190,7 +190,7 @@ namespace ServerSideMap
             var convertedPin = UtilityPin.ConvertPin(pin);
             var data = ExplorationDatabase.PackPin(convertedPin);
 
-            pin.m_save = !deletePin;
+            pin.m_save = !deletePin && pin.m_save;
             ExplorationDatabase.ClientPins.Add(convertedPin);
 
             if (!_ZNet.IsServer(_ZNet._instance))
