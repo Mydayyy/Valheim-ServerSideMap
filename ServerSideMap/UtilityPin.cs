@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.Linq;
 using HarmonyLib;
 
 namespace ServerSideMap
@@ -70,16 +71,14 @@ namespace ServerSideMap
         {
             var pins = Traverse.Create(_Minimap._instance).Field("m_pins").GetValue() as List<Minimap.PinData>;
 
-            foreach (var pin in pins)
+            foreach (var pin in pins.ToList())
             {
                 if (!pin.m_save) continue;
-                if (!removeDupes || !LocalPinIsDupe(pin))
-                {
-                    PinSync.SendPinToServer(pin, false);
-                    var pin1 = UtilityPin.ConvertPin(pin);
-                    _Minimap.AddPin(_Minimap._instance, pin1.Pos, pin1.Type, pin1.Name, false, pin1.Checked);
-                    ExplorationDatabase.ClientPins.Add(pin1);
-                }
+                if (removeDupes && LocalPinIsDupe(pin)) continue;
+                PinSync.SendPinToServer(pin, false);
+                var pin1 = UtilityPin.ConvertPin(pin);
+                _Minimap.AddPin(_Minimap._instance, pin1.Pos, pin1.Type, pin1.Name, false, pin1.Checked);
+                ExplorationDatabase.ClientPins.Add(pin1);
             }
         }
 

@@ -13,9 +13,7 @@ namespace ServerSideMap
             {
                 string text = ___m_input.text;
             
-                Utility.Log("Received Text: " + text);
-
-                if (text.ToLower().Equals("/convertpins removelocaldupes"))
+                if (text.ToLower().Equals("/convertpins ignorelocaldupes"))
                 {
                     UtilityPin.UploadAllPins(true);
                     return false;
