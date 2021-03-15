@@ -39,7 +39,7 @@ You can toggle marker and map share separately, refer to Marker Share  2&3 for i
 Currently there are three available chat commands:
 
 - **/convertpins**: Uploads  all pins which are currently clientside to the server.
-- **/convertpins removelocaldupes**: Uploads all pins which are currently clientside to the server. Pins which have a pin on the server near them are _not_ uploaded. Default radius 15.0, can be adjusted in the config.
+- **/convertpins ignorelocaldupes**: Uploads all pins which are currently clientside to the server. Pins which have a pin on the server near them are _not_ uploaded. Default radius 15.0, can be adjusted in the config.
 - **/deletealllocalpins**: **DELETES** all local pins. Those will not be recoverable, use it when you are absolutely sure you want to do that.
 
 ## Bug Reports
