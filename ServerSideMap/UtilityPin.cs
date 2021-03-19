@@ -86,7 +86,7 @@ namespace ServerSideMap
         {
             var pins = Traverse.Create(_Minimap._instance).Field("m_pins").GetValue() as List<Minimap.PinData>;
 
-            foreach (var pin in pins)
+            foreach (var pin in pins.ToList())
             {
                 if(pin.m_save)
                     _Minimap.RemovePin(_Minimap._instance, pin);
