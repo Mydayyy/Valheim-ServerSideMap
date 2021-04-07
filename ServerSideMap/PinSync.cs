@@ -285,6 +285,22 @@ namespace ServerSideMap
             }
         }
         
+        [HarmonyPatch(typeof (Minimap), "OnMapRightClick")]
+        private class MinimapPatchOnMapRightClick
+        {
+            // ReSharper disable once InconsistentNaming
+            private static void Postfix(Minimap __instance)
+            {
+                if (LatestClosestPin == null) return;
+
+                var clientPin = UtilityPin.GetClientPin(LatestClosestPin);
+
+                if (clientPin == null) return;
+
+                RemovePinFromServer(clientPin);
+            }
+        }
+        
         [HarmonyPatch(typeof (Minimap), "GetClosestPin", typeof(Vector3),  typeof(float))]
         private class MinimapPatchGetClosestPin
         {
@@ -332,11 +348,11 @@ namespace ServerSideMap
             // ReSharper disable once InconsistentNaming
             private static void Postfix(Minimap __instance, Minimap.PinData pin)
             {
-                var clientPin = UtilityPin.GetClientPin(pin);
-
-                if (clientPin == null) return;
-                
-                RemovePinFromServer(clientPin);
+                // var clientPin = UtilityPin.GetClientPin(pin);
+                //
+                // if (clientPin == null) return;
+                //
+                // RemovePinFromServer(clientPin);
             }
         }
         
