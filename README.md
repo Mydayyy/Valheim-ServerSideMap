@@ -3,7 +3,7 @@
 This plugin completely moves the explored map and created pins to the server. 
 As clients explore, they will send their explored areas to the server who will then
 distribute it to all connected clients. When a client joins, the server will synchronize the 
-currently explored areas to the client. Pins are shared as well and but default to false and need to be enabled. 
+currently explored areas to the client. Pins are shared as well but default to false and need to be enabled. 
 When pin sharing is used, all newly created pins are send to the server who saves them along with the 
 explored area. 
 
