@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using HarmonyLib;
 using UnityEngine;
 using Logger = BepInEx.Logging.Logger;
@@ -31,8 +33,10 @@ namespace ServerSideMap
             
             var fogTexture =  Traverse.Create((_Minimap._instance)).Field("m_fogTexture").GetValue() as Texture2D;
             fogTexture.Apply();
-            
-            SendChunkToServer(client, chunk);
+
+
+            _ZNet._instance.StartCoroutine(SendChunkToServer(client, chunk));
+
 
             // var explored = ExplorationDatabase.UnpackBoolArray(mapData);
             //
@@ -110,9 +114,11 @@ namespace ServerSideMap
             }
         }
 
-        private static void SendChunkToServer(ZRpc client, int chunk)
+        private static IEnumerator SendChunkToServer(ZRpc client, int chunk)
         {
-            if(chunk >= CHUNKS) return;
+            if (chunk >= CHUNKS) yield break;
+
+            yield return new WaitUntil(() => _ZNet.GetServerRPC(_ZNet._instance) != null);
             
             var size = ExplorationDatabase.MapSizeSquared / CHUNKS;
             var startIndex = chunk * (ExplorationDatabase.MapSizeSquared / CHUNKS);
@@ -124,8 +130,7 @@ namespace ServerSideMap
             }
             else
             {
-                var znet =  Traverse.Create(typeof(ZNet)).Field("m_instance").GetValue() as ZNet;
-                var server = _ZNet.GetServerRPC(znet);
+                var server = _ZNet.GetServerRPC(_ZNet._instance);
                 server.Invoke("OnClientInitialData", (object) z);
             }
         }
