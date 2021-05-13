@@ -42,6 +42,26 @@ Currently there are three available chat commands:
 - **/convertpins ignorelocaldupes**: Uploads all pins which are currently clientside to the server. Pins which have a pin on the server near them are **not** uploaded. Default radius 15.0, can be adjusted in the config.
 - **/deletealllocalpins**: **DELETES** all local pins. Those will not be recoverable, use it when you are absolutely sure you want to do that.
 
+#### **Hotkeys:**
+You can enable hotkeys for the convertpins and 'convertpins ignorelocaldupes'. 
+To enable, adjust the Hotkeys section in the config accordingly. A list of 
+valid strings can be found here: [https://docs.unity3d.com/ScriptReference/KeyCode.html](https://docs.unity3d.com/ScriptReference/KeyCode.html).
+Leave empty for no hotkey (default)
+Example:
+```
+[Hotkeys]
+
+## Hotkey to run /convertpins
+# Setting type: String
+# Default value: 
+KeyConvertAll = F10
+
+## Hotkey to run /convertpins ignorelocaldupes
+# Setting type: String
+# Default value: 
+KeyConvertIgnoreDupes = F11
+```
+
 ## Bug Reports
 Please use [Github](https://github.com/Mydayyy/Valheim-ServerSideMap/issues) for bug reports and feedback.
 
@@ -59,6 +79,7 @@ You need to copy the following dlls into the Libs folder:
 - UnityEngine.dll
 - UnityEngine.ImageConversionModule.dll
 - UnityEngine.UI.dll
+- UnityEngine.InputLegacyModule.dll
 
 ## KoFi
 My kofi can be found [here](https://ko-fi.com/mydayyy)

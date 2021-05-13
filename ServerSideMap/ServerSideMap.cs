@@ -8,7 +8,7 @@ using HarmonyLib;
 
 namespace ServerSideMap
 {
-    [BepInPlugin("eu.mydayyy.plugins.serversidemap", "ServerSideMap", "1.3.2.0")]
+    [BepInPlugin("eu.mydayyy.plugins.serversidemap", "ServerSideMap", "1.3.3.0")]
     public class ServerSideMap : BaseUnityPlugin
     {
         void Awake()
@@ -19,6 +19,13 @@ namespace ServerSideMap
             Store.EnableMapShare = Config.Bind("General", "EnableMapShare", true, "Client: Whether or not to participate in sharing the map. Server: Whether or not to allow map sharing");
             Store.EnablePinShare = Config.Bind("General", "EnableMarkerShare", false, "Client: Whether or not to participate in sharing markers. Server: Whether or not to allow marker sharing");
             Store.DuplicatePinRadius = Config.Bind("PinShare", "DuplicatePinRadius", 15.0f, "A local pin will not be uploaded if a pin exists in the given radius on the server (when using /convertpins ignorelocaldupes)");
+            Store.sKeyConvertAll = Config.Bind("Hotkeys", "KeyConvertAll", "", "Hotkey to run /convertpins");
+            Store.sKeyConvertIgnoreDupes = Config.Bind("Hotkeys", "KeyConvertIgnoreDupes", "", "Hotkey to run /convertpins ignorelocaldupes");
+            
+            Store.InitHotkeys();
+            Utility.Log("Store1: " + Store.HasKeyConvertAll());
+            Utility.Log("Store2: " + Store.HasKeyConvertIgnoreDupes());
+
         }
 
         [HarmonyPatch(typeof (ZNet), "OnNewConnection")]

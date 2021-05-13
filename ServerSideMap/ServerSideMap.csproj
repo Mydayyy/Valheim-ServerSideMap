@@ -60,12 +60,16 @@
     <Reference Include="UnityEngine.ImageConversionModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\Libs\UnityEngine.ImageConversionModule.dll</HintPath>
     </Reference>
+    <Reference Include="UnityEngine.InputLegacyModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+      <HintPath>..\Libs\UnityEngine.InputLegacyModule.dll</HintPath>
+    </Reference>
     <Reference Include="UnityEngine.UI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
       <HintPath>..\Libs\UnityEngine.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CommandsPinUpsync.cs" />
+    <Compile Include="Hotkeys.cs" />
     <Compile Include="Store.cs" />
     <Compile Include="ExplorationDatabase.cs" />
     <Compile Include="ExplorationMapSync.cs" />
