@@ -28,6 +28,11 @@ namespace ServerSideMap
                     UtilityPin.DeleteLocalPins();
                     return false;
                 }
+                if (text.ToLower().Equals("/downloadpins"))
+                {
+                    UtilityPin.DownloadPins();
+                    return false;
+                }
                 return true;
             }
         }

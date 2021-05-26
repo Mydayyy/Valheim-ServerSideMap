@@ -92,5 +92,15 @@ namespace ServerSideMap
                     _Minimap.RemovePin(_Minimap._instance, pin);
             }
         }
+
+        public static void DownloadPins()
+        {
+            var pins = ExplorationDatabase.ClientPins.ToList();
+            foreach (var pin in pins)
+            {
+                var valPin = GetMapPin(pin);
+                valPin.m_save = true;
+            }
+        }
     }
 }
