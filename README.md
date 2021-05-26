@@ -41,6 +41,7 @@ Currently there are three available chat commands:
 - **/convertpins**: Uploads  all pins which are currently clientside to the server.
 - **/convertpins ignorelocaldupes**: Uploads all pins which are currently clientside to the server. Pins which have a pin on the server near them are **not** uploaded. Default radius 15.0, can be adjusted in the config.
 - **/deletealllocalpins**: **DELETES** all local pins. Those will not be recoverable, use it when you are absolutely sure you want to do that.
+- **/downloadpins**: Downloads all pins from the server and converts them to local pins again. The reverse process of convertpins.
 
 #### **Hotkeys:**
 You can enable hotkeys for the convertpins and 'convertpins ignorelocaldupes'. 
