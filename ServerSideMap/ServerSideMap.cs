@@ -8,7 +8,7 @@ using HarmonyLib;
 
 namespace ServerSideMap
 {
-    [BepInPlugin("eu.mydayyy.plugins.serversidemap", "ServerSideMap", "1.3.4.0")]
+    [BepInPlugin("eu.mydayyy.plugins.serversidemap", "ServerSideMap", "1.3.5.0")]
     public class ServerSideMap : BaseUnityPlugin
     {
         void Awake()
