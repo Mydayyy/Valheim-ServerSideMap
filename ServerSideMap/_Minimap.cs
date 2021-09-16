@@ -29,12 +29,13 @@ namespace ServerSideMap
         }
         
         [HarmonyReversePatch]
-        [HarmonyPatch(typeof(Minimap), "AddPin", typeof(Vector3), typeof(Minimap.PinType), typeof(string), typeof(bool), typeof(bool))]
+        [HarmonyPatch(typeof(Minimap), "AddPin", typeof(Vector3), typeof(Minimap.PinType), typeof(string), typeof(bool), typeof(bool), typeof(long))]
         public static Minimap.PinData AddPin(Minimap instance, Vector3 pos,
             Minimap.PinType type,
             string name,
             bool save,
-            bool isChecked)
+            bool isChecked,
+            long owner)
         {
             throw new NotImplementedException();
         }

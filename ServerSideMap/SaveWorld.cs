@@ -17,6 +17,14 @@ namespace ServerSideMap
                 var worldSavePath =  Traverse.Create(world).Field("m_worldSavePath").GetValue() as String;
                 var exploredPath = worldSavePath + "/" + world.m_name + ".mod.serversidemap.explored";
                 
+                // Make one time backup before hs
+                var backupPath = exploredPath + ".beforehs";
+                if (File.Exists(exploredPath) && !File.Exists(backupPath))
+                {
+                    File.Copy(exploredPath, backupPath);
+                }
+                //
+
                 FileStream fileStream;
                 try
                 {
@@ -30,6 +38,7 @@ namespace ServerSideMap
                     __instance.Save(true);
                     return;
                 }
+                
                 BinaryReader reader = new BinaryReader(fileStream);
                 // var data = reader.ReadBytes(int.MaxValue);
                 var data = reader.ReadAllBytes();
