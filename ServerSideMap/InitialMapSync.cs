@@ -18,7 +18,7 @@ namespace ServerSideMap
             mapData.SetPos(0);
             
             var chunk = mapData.ReadInt();
-            Utility.Log("Client received initial map data by server chunk " + (chunk+1) + "/" + CHUNKS);
+            //Utility.Log("Client received initial map data by server chunk " + (chunk+1) + "/" + CHUNKS);
             
             var explored = ExplorationDatabase.UnpackBoolArray(mapData, ExplorationDatabase.MapSizeSquared / CHUNKS);
             var startIndex = chunk * (ExplorationDatabase.MapSizeSquared / CHUNKS);
@@ -75,7 +75,7 @@ namespace ServerSideMap
             var startIndex = chunk * (ExplorationDatabase.MapSizeSquared / CHUNKS);
             var size = ExplorationDatabase.MapSizeSquared / CHUNKS;
             
-            Utility.Log("Server received initial map data by client chunk " + (chunk+1) + "/" + CHUNKS);
+            //Utility.Log("Server received initial map data by client chunk " + (chunk+1) + "/" + CHUNKS);
             ExplorationDatabase.MergeExplorationArray(ExplorationDatabase.UnpackBoolArray(mapData, size), startIndex, size);
             
             SendChunkToClient(client, chunk+1);
