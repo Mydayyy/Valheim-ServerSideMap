@@ -96,18 +96,15 @@ namespace ServerSideMap
             }
         }
         
-        [HarmonyPatch(typeof (Minimap), "SaveMapData")]
-        private class MinimapPatchSaveMapData
+        [HarmonyPatch(typeof (ZNet), "Shutdown")]
+        private class ZNetPatchShutdown
         {
             // ReSharper disable once InconsistentNaming
-            private static void Postfix(Minimap __instance)
+            private static void Postfix(ZNet __instance)
             {
                 ExplorationDatabase.ClientPins.Clear();
             }
         }
-        
-        
-        
         
         [HarmonyPatch(typeof (Minimap), "SetMapData", typeof(byte[]))]
         private class MinimapPatchSetMapData
