@@ -14,8 +14,9 @@ namespace ServerSideMap
             private static void Postfix(ZNet __instance)
             {
                 var world =  Traverse.Create(typeof(ZNet)).Field("m_world").GetValue() as World;
-                var worldSavePath =  Traverse.Create(world).Field("m_worldSavePath").GetValue() as String;
-                var exploredPath = worldSavePath + "/" + world.m_name + ".mod.serversidemap.explored";
+                var worldSavePath = System.IO.Path.ChangeExtension(world.GetDBPath(), null);
+                Utility.Log("World .explored save path: " + worldSavePath);
+                var exploredPath = worldSavePath + ".mod.serversidemap.explored";
                 
                 // Make one time backup before hs
                 var backupPath = exploredPath + ".beforehs";
@@ -55,9 +56,9 @@ namespace ServerSideMap
             private static void Postfix()
             {
                 var world =  Traverse.Create(typeof(ZNet)).Field("m_world").GetValue() as World;
-                var worldSavePath =  Traverse.Create(world).Field("m_worldSavePath").GetValue() as String;
-                var exploredPath = worldSavePath + "/" + world.m_name + ".mod.serversidemap.explored";
-        
+                var worldSavePath = System.IO.Path.ChangeExtension(world.GetDBPath(), null);
+                var exploredPath = worldSavePath + ".mod.serversidemap.explored";
+                Utility.Log("World .explored save path: " + worldSavePath);
                 FileStream fileStream = File.Create(exploredPath);
                 BinaryWriter writer = new BinaryWriter(fileStream);
                 writer.Write(ExplorationDatabase.GetMapData().GetArray());

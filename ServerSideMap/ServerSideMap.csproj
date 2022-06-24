@@ -11,6 +11,7 @@
     <AssemblyName>ServerSideMap</AssemblyName>
     <TargetFrameworkVersion>v4.6</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
+    <LangVersion>8</LangVersion>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <PlatformTarget>AnyCPU</PlatformTarget>
@@ -32,38 +33,38 @@
     <WarningLevel>4</WarningLevel>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="0Harmony, Version=2.3.0.0, Culture=neutral, PublicKeyToken=null">
+    <Reference Include="0Harmony">
       <HintPath>..\Libs\0Harmony.dll</HintPath>
     </Reference>
-    <Reference Include="assembly_utils, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <Reference Include="assembly_utils">
       <HintPath>..\Libs\assembly_utils.dll</HintPath>
     </Reference>
-    <Reference Include="assembly_valheim, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <Reference Include="assembly_valheim">
       <HintPath>..\Libs\assembly_valheim.dll</HintPath>
     </Reference>
-    <Reference Include="BepInEx, Version=5.4.5.0, Culture=neutral, PublicKeyToken=null">
+    <Reference Include="BepInEx">
       <HintPath>..\Libs\BepInEx.dll</HintPath>
     </Reference>
-    <Reference Include="BepInEx.Harmony, Version=2.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <Reference Include="BepInEx.Harmony">
       <HintPath>..\Libs\BepInEx.Harmony.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Data" />
     <Reference Include="System.Xml" />
-    <Reference Include="UnityEngine, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <Reference Include="UnityEngine">
       <HintPath>..\Libs\UnityEngine.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.CoreModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <Reference Include="UnityEngine.CoreModule">
       <HintPath>..\Libs\UnityEngine.CoreModule.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.ImageConversionModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <Reference Include="UnityEngine.ImageConversionModule">
       <HintPath>..\Libs\UnityEngine.ImageConversionModule.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.InputLegacyModule, Version=0.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <Reference Include="UnityEngine.InputLegacyModule">
       <HintPath>..\Libs\UnityEngine.InputLegacyModule.dll</HintPath>
     </Reference>
-    <Reference Include="UnityEngine.UI, Version=1.0.0.0, Culture=neutral, PublicKeyToken=null">
+    <Reference Include="UnityEngine.UI">
       <HintPath>..\Libs\UnityEngine.UI.dll</HintPath>
     </Reference>
   </ItemGroup>
