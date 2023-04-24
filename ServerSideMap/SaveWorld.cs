@@ -43,6 +43,7 @@ namespace ServerSideMap
                 BinaryReader reader = new BinaryReader(fileStream);
                 // var data = reader.ReadBytes(int.MaxValue);
                 var data = reader.ReadAllBytes();
+                reader.Dispose();
                 var z = new ZPackage(data);
                 ExplorationDatabase.SetMapData(z);
                 Utility.Log("loaded from existing explore file");
