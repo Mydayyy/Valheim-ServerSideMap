@@ -173,15 +173,15 @@ namespace ServerSideMap
             }
         }
         
-        [HarmonyPatch(typeof (Minimap), "ShowPinNameInput")]
-        private class MinimapPatchShowPinNameInput
-        {
-            // ReSharper disable once InconsistentNaming
-            private static void Postfix(Minimap __instance, Minimap.PinData pin)
-            {
-                CurrentPin = pin;
-            }
-        }
+        // [HarmonyPatch(typeof (Minimap), "ShowPinNameInput")]
+        // private class MinimapPatchShowPinNameInput
+        // {
+        //     // ReSharper disable once InconsistentNaming
+        //     private static void Postfix(Minimap __instance, Minimap.PinData pin)
+        //     {
+        //         CurrentPin = pin;
+        //     }
+        // }
 
         public static void SendPinToServer(Minimap.PinData pin, bool deletePin = true)
         {
@@ -356,19 +356,21 @@ namespace ServerSideMap
             }
         }
         
-        [HarmonyPatch(typeof (Minimap), "UpdateNameInput")]
-        private class MinimapPatchUpdateNameInput
+        [HarmonyPatch(typeof (Minimap), "OnPinTextEntered")]
+        private class MinimapPatchOnPinTextEntered
         {
-            // ReSharper disable once InconsistentNaming
-            private static void Postfix(Minimap __instance, Minimap.PinData ___m_namePin)
+            static void Prefix(Minimap __instance, out Minimap.PinData __state, Minimap.PinData ___m_namePin)
             {
-                if (CurrentPin == null) return;
-                
-                if (___m_namePin == null)
-                {
-                    SendPinToServer(CurrentPin);
-                    CurrentPin = null;
-                }
+                __state = null;
+                if (___m_namePin == null) return;
+                __state = ___m_namePin;
+            }
+            
+            // ReSharper disable once InconsistentNaming
+            private static void Postfix(Minimap __instance, Minimap.PinData __state)
+            {
+                if (__state == null) return;
+                SendPinToServer(__state);
             }
         }
     }
