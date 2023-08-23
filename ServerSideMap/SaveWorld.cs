@@ -56,13 +56,14 @@ namespace ServerSideMap
             // ReSharper disable once InconsistentNaming
             private static void Postfix()
             {
+                var data = ExplorationDatabase.GetMapData().GetArray();
                 var world =  Traverse.Create(typeof(ZNet)).Field("m_world").GetValue() as World;
                 var worldSavePath = System.IO.Path.ChangeExtension(world.GetDBPath(), null);
                 var exploredPath = worldSavePath + ".mod.serversidemap.explored";
                 Utility.Log("World .explored save path: " + worldSavePath);
                 FileStream fileStream = File.Create(exploredPath);
                 BinaryWriter writer = new BinaryWriter(fileStream);
-                writer.Write(ExplorationDatabase.GetMapData().GetArray());
+                writer.Write(data);
                 writer.Flush();
                 fileStream.Flush(true);
                 fileStream.Close();
