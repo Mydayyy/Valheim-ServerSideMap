@@ -36,7 +36,7 @@ namespace ServerSideMap
                     // ReSharper disable once RedundantCast
                     ExplorationDatabase.SetMapData(ExplorationDatabase.Default());
                     Utility.Log("new explore file generated");
-                    __instance.Save(true);
+                    __instance.Save(true, false);
                     return;
                 }
                 
