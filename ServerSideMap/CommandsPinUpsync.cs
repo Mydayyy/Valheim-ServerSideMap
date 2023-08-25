@@ -1,5 +1,6 @@
 using HarmonyLib;
 using UnityEngine.UI;
+using TMPro;
 
 namespace ServerSideMap
 {
@@ -9,7 +10,7 @@ namespace ServerSideMap
         private class ChatPatchInputText
         {
             // ReSharper disable once InconsistentNaming
-            private static bool Prefix(Chat __instance, InputField ___m_input)
+            private static bool Prefix(Chat __instance, TMP_InputField ___m_input)
             {
                 string text = ___m_input.text;
             
