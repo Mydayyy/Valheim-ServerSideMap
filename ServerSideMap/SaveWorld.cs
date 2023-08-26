@@ -7,6 +7,15 @@ namespace ServerSideMap
 {
     public class SaveWorld
     {
+        public static void GenerateDefaultExploredFile(ZNet __instance)
+        {
+            // ReSharper disable once RedundantCast
+            ExplorationDatabase.SetMapData(ExplorationDatabase.Default());
+            Utility.Log("new explore file generated");
+            __instance.Save(true, false);
+            return;
+        }
+        
         [HarmonyPatch(typeof (ZNet), "LoadWorld")]
         private  class ZnetPatchLoadMap
         {
@@ -33,10 +42,7 @@ namespace ServerSideMap
                 }
                 catch
                 {
-                    // ReSharper disable once RedundantCast
-                    ExplorationDatabase.SetMapData(ExplorationDatabase.Default());
-                    Utility.Log("new explore file generated");
-                    __instance.Save(true, false);
+                    GenerateDefaultExploredFile(__instance);
                     return;
                 }
                 
@@ -44,6 +50,12 @@ namespace ServerSideMap
                 // var data = reader.ReadBytes(int.MaxValue);
                 var data = reader.ReadAllBytes();
                 reader.Dispose();
+                if (data.Length == 0)
+                {
+                    Utility.Log("Existing explored file is 0 bytes. Generating new one.");
+                    GenerateDefaultExploredFile(__instance);
+                    return;
+                }
                 var z = new ZPackage(data);
                 ExplorationDatabase.SetMapData(z);
                 Utility.Log("loaded from existing explore file");
@@ -57,6 +69,11 @@ namespace ServerSideMap
             private static void Postfix()
             {
                 var data = ExplorationDatabase.GetMapData().GetArray();
+                if (data.Length == 0)
+                {
+                    Utility.Log("Explored data is zero bytes. Refusing to save.");
+                    return;
+                }
                 var world =  Traverse.Create(typeof(ZNet)).Field("m_world").GetValue() as World;
                 var worldSavePath = System.IO.Path.ChangeExtension(world.GetDBPath(), null);
                 var exploredPath = worldSavePath + ".mod.serversidemap.explored";

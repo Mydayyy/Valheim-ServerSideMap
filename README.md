@@ -5,7 +5,13 @@ As clients explore, they will send their explored areas to the server who will t
 distribute it to all connected clients. When a client joins, the server will synchronize the 
 currently explored areas to the client. Pins are shared as well but default to false and need to be enabled. 
 When pin sharing is used, all newly created pins are send to the server who saves them along with the 
-explored area. 
+explored area.
+
+## Hildir Update
+Due to an unknown reason, the .explored file got wipe and set to zero bytes.
+If you were using the pin system, you will need to restore a backup of the file.
+Otherwise, no action is required as it will be regenerated and the explored progress
+from players will be synchronized when they log back in again.
 
 ## Installation
 
@@ -62,6 +68,11 @@ KeyConvertAll = F10
 # Default value: 
 KeyConvertIgnoreDupes = F11
 ```
+
+## Known Issues
+Currently, the mod is incompatible with crossplay/PlayFab. PR's are welcome if someone
+wants to look into this.
+
 
 ## Bug Reports
 Please use [Github](https://github.com/Mydayyy/Valheim-ServerSideMap/issues) for bug reports and feedback.
