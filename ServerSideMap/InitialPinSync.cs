@@ -34,7 +34,7 @@ namespace ServerSideMap
                 {
                     _Minimap.RemovePin(_Minimap._instance, mapPin);
                 }
-                _Minimap.AddPin(_Minimap._instance, pin.Pos, pin.Type, pin.Name, false, pin.Checked, 0);
+                _Minimap.AddPin(_Minimap._instance, pin.Pos, pin.Type, pin.Name, false, pin.Checked, 0, "");
             }
         }
 

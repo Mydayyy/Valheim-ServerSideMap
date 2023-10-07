@@ -77,7 +77,7 @@ namespace ServerSideMap
                 if (removeDupes && LocalPinIsDupe(pin)) continue;
                 PinSync.SendPinToServer(pin, false);
                 var pin1 = UtilityPin.ConvertPin(pin);
-                _Minimap.AddPin(_Minimap._instance, pin1.Pos, pin1.Type, pin1.Name, false, pin1.Checked, 0);
+                _Minimap.AddPin(_Minimap._instance, pin1.Pos, pin1.Type, pin1.Name, false, pin1.Checked, 0, "");
                 ExplorationDatabase.ClientPins.Add(pin1);
             }
         }
