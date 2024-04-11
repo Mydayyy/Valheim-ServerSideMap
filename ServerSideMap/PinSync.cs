@@ -301,11 +301,11 @@ namespace ServerSideMap
             }
         }
         
-        [HarmonyPatch(typeof (Minimap), "GetClosestPin", typeof(Vector3),  typeof(float))]
+        [HarmonyPatch(typeof (Minimap), "GetClosestPin", typeof(Vector3),  typeof(float), typeof(bool))]
         private class MinimapPatchGetClosestPin
         {
             // ReSharper disable once InconsistentNaming
-            private static void Postfix(Minimap __instance, ref Minimap.PinData __result, Vector3 pos, float radius)
+            private static void Postfix(Minimap __instance, ref Minimap.PinData __result, Vector3 pos, float radius, bool mustBeVisible = true)
             {
                 if (!Store.IsSharingPin()) return;
                 
