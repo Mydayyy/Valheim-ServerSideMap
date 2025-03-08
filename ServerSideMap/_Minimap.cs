@@ -1,6 +1,7 @@
 using System;
 using HarmonyLib;
 using UnityEngine;
+using Splatform;
 
 namespace ServerSideMap
 {
@@ -29,14 +30,14 @@ namespace ServerSideMap
         }
         
         [HarmonyReversePatch]
-        [HarmonyPatch(typeof(Minimap), "AddPin", typeof(Vector3), typeof(Minimap.PinType), typeof(string), typeof(bool), typeof(bool), typeof(long), typeof(string))]
+        [HarmonyPatch(typeof(Minimap), "AddPin", typeof(Vector3), typeof(Minimap.PinType), typeof(string), typeof(bool), typeof(bool), typeof(long), typeof(PlatformUserID))]
         public static Minimap.PinData AddPin(Minimap instance, Vector3 pos,
             Minimap.PinType type,
             string name,
             bool save,
             bool isChecked,
             long owner,
-            string author)
+            PlatformUserID author)
         {
             throw new NotImplementedException();
         }

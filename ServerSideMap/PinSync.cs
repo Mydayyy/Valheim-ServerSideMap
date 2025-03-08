@@ -1,6 +1,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using HarmonyLib;
+using Splatform;
 using UnityEngine;
 
 namespace ServerSideMap
@@ -49,7 +50,7 @@ namespace ServerSideMap
             
             var pin = ExplorationDatabase.UnpackPin(pinData);
             
-            _Minimap.AddPin(_Minimap._instance, pin.Pos, pin.Type, pin.Name, false, pin.Checked, 0, "");
+            _Minimap.AddPin(_Minimap._instance, pin.Pos, pin.Type, pin.Name, false, pin.Checked, 0, new PlatformUserID(""));
             ExplorationDatabase.ClientPins.Add(pin);
             
             Utility.Log("Client received pin by server");
