@@ -8,7 +8,7 @@ When pin sharing is used, all newly created pins are send to the server who save
 explored area.
 
 ## Hildir Update
-Due to an unknown reason, the .explored file got wipe and set to zero bytes.
+Due to an unknown reason, the .explored file got wiped and set to zero bytes.
 If you were using the pin system, you will need to restore a backup of the file.
 Otherwise, no action is required as it will be regenerated and the explored progress
 from players will be synchronized when they log back in again.
