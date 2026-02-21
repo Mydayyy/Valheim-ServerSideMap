@@ -32,37 +32,10 @@ namespace ServerSideMap
             }
             
             var fogTexture =  Traverse.Create((_Minimap._instance)).Field("m_fogTexture").GetValue() as Texture2D;
-            fogTexture.Apply();
+            fogTexture?.Apply();
 
 
             _ZNet._instance.StartCoroutine(SendChunkToServer(client, chunk));
-
-
-            // var explored = ExplorationDatabase.UnpackBoolArray(mapData);
-            //
-            // for (var index = 0; index < explored.Length; index++)
-            // {
-            //     if (explored[index])
-            //     {
-            //         _Minimap.Explore(_Minimap._instance, index % ExplorationDatabase.MapSize, index / ExplorationDatabase.MapSize);
-            //     }
-            // }
-            //
-            // var fogTexture =  Traverse.Create((_Minimap._instance)).Field("m_fogTexture").GetValue() as Texture2D;
-            // fogTexture.Apply();
-            //
-            // explored = Traverse.Create(_Minimap._instance).Field("m_explored").GetValue() as bool[];
-            // var z = ExplorationDatabase.PackBoolArray(explored);
-            // if (_ZNet.IsServer(_ZNet._instance))
-            // {
-            //     OnClientInitialData(null, z);
-            // }
-            // else
-            // {
-            //     var znet =  Traverse.Create(typeof(ZNet)).Field("m_instance").GetValue() as ZNet;
-            //     ZRpc server = _ZNet.GetServerRPC(znet);
-            //     server.Invoke("OnClientInitialData", (object) z);
-            // }
         }
         
         public static void OnClientInitialData(ZRpc client,  ZPackage mapData)
@@ -148,13 +121,6 @@ namespace ServerSideMap
                 {
                     SendChunkToClient(null, 0);
                 }
-                
-                // else
-                // {
-                //     var znet =  Traverse.Create(typeof(ZNet)).Field("m_instance").GetValue() as ZNet;
-                //     ZRpc server = _ZNet.GetServerRPC(znet);
-                //     // server.Invoke("OnClientInitialData", (object) z);
-                // }
             }
         }
         

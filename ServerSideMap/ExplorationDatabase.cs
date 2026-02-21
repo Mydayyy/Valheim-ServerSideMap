@@ -252,20 +252,14 @@ namespace ServerSideMap
             
             for (var i = 0; i < length; i += 8)
             {          
-
                 var b = z.ReadByte();
                 
-                arr[i] = (b & (1 << 0)) != 0;
-                arr[i+1] = (b & (1 << 1)) != 0;
-                arr[i+2] = (b & (1 << 2)) != 0;
-                arr[i+3] = (b & (1 << 3)) != 0;
-                arr[i+4] = (b & (1 << 4)) != 0;
-                arr[i+5] = (b & (1 << 5)) != 0;
-                arr[i+6] = (b & (1 << 6)) != 0;
-                arr[i+7] = (b & (1 << 7)) != 0;
+                for (var bit = 0; bit < 8 && i + bit < length; bit++)
+                {
+                    arr[i + bit] = (b & (1 << bit)) != 0;
+                }
             }
 
-            // Utility.Log("Decompressed exploration array:  " + z.Size() + ":" + arr.Length);
             return arr;
         }
         
@@ -278,6 +272,7 @@ namespace ServerSideMap
             var y = mapData.ReadInt();
             
             var m =  Traverse.Create(typeof(Minimap)).Field("m_instance").GetValue() as Minimap;
+            if (m == null) return;
             var flag = _Minimap.Explore(m, x, y);
             _dirty = flag || _dirty;
         }
@@ -290,7 +285,7 @@ namespace ServerSideMap
             {
                 if (!_dirty) return;
                 var fogTexture =  Traverse.Create((__instance)).Field("m_fogTexture").GetValue() as Texture2D;
-                fogTexture.Apply();
+                fogTexture?.Apply();
                 _dirty = false;
             }
         }

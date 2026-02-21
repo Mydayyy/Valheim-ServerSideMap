@@ -40,8 +40,9 @@ namespace ServerSideMap
                 {
                     fileStream = File.OpenRead(exploredPath);
                 }
-                catch
+                catch (Exception e)
                 {
+                    Utility.Log("Failed to open explored file: " + e.Message);
                     GenerateDefaultExploredFile(__instance);
                     return;
                 }
@@ -78,13 +79,13 @@ namespace ServerSideMap
                 var worldSavePath = System.IO.Path.ChangeExtension(world.GetDBPath(), null);
                 var exploredPath = worldSavePath + ".mod.serversidemap.explored";
                 Utility.Log("World .explored save path: " + worldSavePath);
-                FileStream fileStream = File.Create(exploredPath);
-                BinaryWriter writer = new BinaryWriter(fileStream);
-                writer.Write(data);
-                writer.Flush();
-                fileStream.Flush(true);
-                fileStream.Close();
-                fileStream.Dispose();
+                using (var fileStream = File.Create(exploredPath))
+                using (var writer = new BinaryWriter(fileStream))
+                {
+                    writer.Write(data);
+                    writer.Flush();
+                    fileStream.Flush(true);
+                }
             }
         }
     }

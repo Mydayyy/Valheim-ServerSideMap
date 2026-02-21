@@ -100,7 +100,10 @@ namespace ServerSideMap
             foreach (var pin in pins)
             {
                 var valPin = GetMapPin(pin);
-                valPin.m_save = true;
+                if (valPin != null)
+                {
+                    valPin.m_save = true;
+                }
             }
         }
     }

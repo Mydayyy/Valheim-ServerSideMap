@@ -8,7 +8,6 @@ namespace ServerSideMap
 {
     public class PinSync
     {
-        private static Minimap.PinData CurrentPin = null;
         private static Minimap.PinData LatestClosestPin = null;
         
             
@@ -174,16 +173,6 @@ namespace ServerSideMap
             }
         }
         
-        // [HarmonyPatch(typeof (Minimap), "ShowPinNameInput")]
-        // private class MinimapPatchShowPinNameInput
-        // {
-        //     // ReSharper disable once InconsistentNaming
-        //     private static void Postfix(Minimap __instance, Minimap.PinData pin)
-        //     {
-        //         CurrentPin = pin;
-        //     }
-        // }
-
         public static void SendPinToServer(Minimap.PinData pin, bool deletePin = true)
         {
             if (!Store.IsSharingPin()) return;
@@ -240,34 +229,6 @@ namespace ServerSideMap
             }
         }
         
-        // private Minimap.PinData GetClosestPin(Vector3 pos, float radius)
-        // {
-        //     Minimap.PinData pinData = (Minimap.PinData) null;
-        //     float num1 = 999999f;
-        //     foreach (Minimap.PinData pin in this.m_pins)
-        //     {
-        //         if (pin.m_save)
-        //         {
-        //             float num2 = Utils.DistanceXZ(pos, pin.m_pos);
-        //             if ((double) num2 < (double) radius && ((double) num2 < (double) num1 || pinData == null))
-        //             {
-        //                 pinData = pin;
-        //                 num1 = num2;
-        //             }
-        //         }
-        //     }
-        //     return pinData;
-        // }
-        
-        // public void OnMapLeftClick()
-        // {
-        //     ZLog.Log((object) "Left click");
-        //     Minimap.PinData closestPin = this.GetClosestPin(this.ScreenToWorldPoint(Input.get_mousePosition()), this.m_removeRadius * (this.m_largeZoom * 2f));
-        //     if (closestPin == null)
-        //         return;
-        //     closestPin.m_checked = !closestPin.m_checked;
-        // }
-        
         [HarmonyPatch(typeof (Minimap), "OnMapLeftClick")]
         private class MinimapPatchOnMapLeftClick
         {
@@ -313,7 +274,7 @@ namespace ServerSideMap
                 LatestClosestPin = __result;
                 
                 var pinData = (PinData) null;
-                var num1 = 999999f;
+                var num1 = float.MaxValue;
                 foreach (var p in ExplorationDatabase.ClientPins)
                 {
                     var num2 = Utils.DistanceXZ(pos, p.Pos);
@@ -340,20 +301,6 @@ namespace ServerSideMap
                     __result = pin;
                     LatestClosestPin = pin;
                 }
-            }
-        }
-        
-        [HarmonyPatch(typeof (Minimap), "RemovePin", typeof(Minimap.PinData))]
-        private class MinimapPatchRemovePin
-        {
-            // ReSharper disable once InconsistentNaming
-            private static void Postfix(Minimap __instance, Minimap.PinData pin)
-            {
-                // var clientPin = UtilityPin.GetClientPin(pin);
-                //
-                // if (clientPin == null) return;
-                //
-                // RemovePinFromServer(clientPin);
             }
         }
         
