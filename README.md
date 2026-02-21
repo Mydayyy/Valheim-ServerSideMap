@@ -7,6 +7,8 @@ currently explored areas to the client. Pins are shared as well but default to f
 When pin sharing is used, all newly created pins are send to the server who saves them along with the 
 explored area.
 
+It is dual licensed under MIT or the [UNLICENSE](https://unlicense.org).
+
 ## Hildir Update
 Due to an unknown reason, the .explored file got wiped and set to zero bytes.
 If you were using the pin system, you will need to restore a backup of the file.
