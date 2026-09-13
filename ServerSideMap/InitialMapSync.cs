@@ -121,8 +121,14 @@ namespace ServerSideMap
             
             var size = ExplorationDatabase.MapSizeSquared / CHUNKS;
             var startIndex = chunk * (ExplorationDatabase.MapSizeSquared / CHUNKS);
-            var explored = Traverse.Create(_Minimap._instance).Field("m_explored").GetValue() as bool[];
-            var z = ExplorationDatabase.PackBoolArray(explored, chunk, startIndex, size);
+            var explored = Traverse.Create(_Minimap._instance).Field("m_explored").GetValue() as BitArray;
+            
+            // Valheim completely revamped exploration structure and world structure
+            // At this point, this could be entirely rewritten to accomodate their changes
+            var legacy_bool_array = new bool[explored.Length];
+            explored.CopyTo(legacy_bool_array, 0);
+            
+            var z = ExplorationDatabase.PackBoolArray(legacy_bool_array, chunk, startIndex, size);
             if (client == null)
             {
                 OnClientInitialData(null, z);

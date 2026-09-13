@@ -16,7 +16,7 @@ namespace ServerSideMap
             return;
         }
         
-        [HarmonyPatch(typeof (ZNet), "LoadWorld")]
+        [HarmonyPatch(typeof (ZNet), "ServerLoadWorld")]
         private  class ZnetPatchLoadMap
         {
             // ReSharper disable once InconsistentNaming

@@ -277,7 +277,7 @@ namespace ServerSideMap
             var x = mapData.ReadInt();
             var y = mapData.ReadInt();
             
-            var m =  Traverse.Create(typeof(Minimap)).Field("m_instance").GetValue() as Minimap;
+            var m =  Traverse.Create(typeof(Minimap)).Field("s_instance").GetValue() as Minimap;
             var flag = _Minimap.Explore(m, x, y);
             _dirty = flag || _dirty;
         }

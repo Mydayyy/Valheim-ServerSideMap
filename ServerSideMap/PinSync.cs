@@ -286,7 +286,7 @@ namespace ServerSideMap
             }
         }
         
-        [HarmonyPatch(typeof (Minimap), "OnMapRightClick")]
+        [HarmonyPatch(typeof (Minimap), "RemovePinUnderPointer")]
         private class MinimapPatchOnMapRightClick
         {
             // ReSharper disable once InconsistentNaming
